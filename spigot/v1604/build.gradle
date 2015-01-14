@@ -1,0 +1,81 @@
+// Apply plugin
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+
+// Minimum version of Java required
+sourceCompatibility = '1.6'
+targetCompatibility = '1.6'
+
+// Basic project information
+group = 'cybermaxke'
+archivesBaseName = 'merchants-spigot-v1604'
+version = '1.0.0-SNAPSHOT'
+
+// Repositories
+repositories {
+	mavenCentral()
+	maven {
+		url 'http://repo.bukkit.org/content/groups/public/'
+	}
+
+	// Local dependencies
+	flatDir {
+        dirs 'lib'
+    }
+}
+
+// Dependencies
+dependencies {
+	compile project(':merchants-api')
+	compile name: 'spigot-1.6.4'
+}
+
+jar {
+	// Jar shading and packaging configuration
+	from { project(':merchants-api').sourceSets.main.output }
+
+	// Classifier
+	classifier = 'release'
+
+	// Exclude empty directories
+	includeEmptyDirs = false
+}
+
+processResources {
+	ext.set('mainclass', 'me.cybermaxke.merchants.v1604.SMerchantPlugin')
+
+	// This will ensure that this task is redone when the versions change.
+	inputs.property "name", project.theName
+	inputs.property "version", project.version
+	inputs.property "identifier", project.theIdentifier
+	inputs.property "description", project.theDescription
+	inputs.property "projectpage", project.theProjectPage
+	inputs.property "authors", project.theAuthors
+	inputs.property "credits", project.theCredits
+
+	// Add the main class path
+	inputs.property "mainclass", ext.mainclass
+
+	// Replace stuff in plugin.yml, nothing else
+	from(sourceSets.main.resources.srcDirs) {
+		include 'plugin.yml'
+
+		// Replace the properties
+		expand([
+			'name':project.theName,
+			'version':project.version,
+			'identifier':project.theIdentifier,
+			'description':project.theDescription,
+			'projectpage':project.theProjectPage,
+			'authors':project.theAuthors,
+			'credits':project.theCredits,
+			'mainclass':ext.mainclass
+		])
+	}
+
+	// Copy everything else, thats not the plugin.yml
+	from(sourceSets.main.resources.srcDirs) {
+		exclude 'plugin.yml'
+	}
+}

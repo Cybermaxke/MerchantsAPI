@@ -1,0 +1,3 @@
+You will need to add the dependency manually, because we are not allowed to add the jar.
+
+Note: The name of jar needs to be the same as this file.

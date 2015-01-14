@@ -1,0 +1,31 @@
+// Apply plugin
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+
+// Minimum version of Java required
+sourceCompatibility = '1.6'
+targetCompatibility = '1.6'
+
+// Basic project information
+group = 'cybermaxke'
+archivesBaseName = 'merchants-api'
+version = '1.0.0-SNAPSHOT'
+
+// Repositories
+repositories {
+	mavenCentral()
+	maven {
+		url 'http://repo.bukkit.org/content/groups/public/'
+	}
+}
+
+// Project dependencies
+dependencies {
+	compile 'org.bukkit:bukkit:1.7.9-R0.2'
+}
+
+jar {
+	// classifier
+	classifier = 'release'
+}
