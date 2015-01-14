@@ -49,20 +49,12 @@ public class SMerchantOffer extends MerchantRecipe implements MerchantOffer {
 		this.item2 = item2;
 	}
 
-	/**
-	 * Links the offer to the merchant.
-	 * 
-	 * @param merchant the merchant
-	 */
+	// Links the offer to the merchant.
 	void add(SMerchant merchant) {
 		this.merchants.add(merchant);
 	}
 
-	/**
-	 * Unlinks the offer from the merchant.
-	 * 
-	 * @param merchant the merchant
-	 */
+	// Unlinks the offer from the merchant.
 	void remove(SMerchant merchant) {
 		this.merchants.remove(merchant);
 	}

@@ -1,11 +1,15 @@
 rootProject.name = theName
 
 include 'merchants-api'
+include 'merchants-spigot-v1407'
+include 'merchants-spigot-v1502'
 include 'merchants-spigot-v1604'
 include 'merchants-spigot-v1710'
 include 'merchants-spigot-v1800'
 
 project(':merchants-api').projectDir = new File('api')
+project(':merchants-spigot-v1407').projectDir = new File('spigot/v1407')
+project(':merchants-spigot-v1502').projectDir = new File('spigot/v1502')
 project(':merchants-spigot-v1604').projectDir = new File('spigot/v1604')
 project(':merchants-spigot-v1710').projectDir = new File('spigot/v1710')
 project(':merchants-spigot-v1800').projectDir = new File('spigot/v1800')

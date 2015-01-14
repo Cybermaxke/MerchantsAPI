@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with MerchantsAPI. If not, see <http://www.gnu.org/licenses/>.
  */
-package me.cybermaxke.merchants.v1604;
+package me.cybermaxke.merchants.v1407;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
@@ -28,18 +28,17 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import net.minecraft.server.v1_6_R3.Container;
-import net.minecraft.server.v1_6_R3.EntityHuman;
-import net.minecraft.server.v1_6_R3.EntityPlayer;
-import net.minecraft.server.v1_6_R3.IMerchant;
-import net.minecraft.server.v1_6_R3.ItemStack;
-import net.minecraft.server.v1_6_R3.MerchantRecipe;
-import net.minecraft.server.v1_6_R3.MerchantRecipeList;
-import net.minecraft.server.v1_6_R3.Packet100OpenWindow;
-import net.minecraft.server.v1_6_R3.Packet250CustomPayload;
+import net.minecraft.server.v1_4_R1.Container;
+import net.minecraft.server.v1_4_R1.EntityHuman;
+import net.minecraft.server.v1_4_R1.EntityPlayer;
+import net.minecraft.server.v1_4_R1.IMerchant;
+import net.minecraft.server.v1_4_R1.MerchantRecipe;
+import net.minecraft.server.v1_4_R1.MerchantRecipeList;
+import net.minecraft.server.v1_4_R1.Packet100OpenWindow;
+import net.minecraft.server.v1_4_R1.Packet250CustomPayload;
 
-import org.bukkit.craftbukkit.v1_6_R3.entity.CraftPlayer;
-import org.bukkit.craftbukkit.v1_6_R3.event.CraftEventFactory;
+import org.bukkit.craftbukkit.v1_4_R1.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_4_R1.event.CraftEventFactory;
 import org.bukkit.entity.Player;
 
 import com.google.common.collect.Lists;
@@ -151,7 +150,7 @@ public class SMerchant implements IMerchant, Merchant {
 			player0.activeContainer.addSlotListener(player0);
 
 			// Open the window
-			player0.playerConnection.sendPacket(new Packet100OpenWindow(window, 6, this.title, 3, true));
+			player0.playerConnection.sendPacket(new Packet100OpenWindow(window, 6, this.title, 3));
 
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
 			DataOutputStream dos = new DataOutputStream(baos);
@@ -207,12 +206,7 @@ public class SMerchant implements IMerchant, Merchant {
 	}
 
 	@Override
-	public void a_(EntityHuman arg0) {
-		// Not used
-	}
-
-	@Override
-	public void a_(ItemStack arg0) {
+	public void b_(EntityHuman arg0) {
 		// Not used
 	}
 

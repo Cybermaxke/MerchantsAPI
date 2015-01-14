@@ -16,17 +16,17 @@
  * You should have received a copy of the GNU General Public License
  * along with MerchantsAPI. If not, see <http://www.gnu.org/licenses/>.
  */
-package me.cybermaxke.merchants.v1800;
+package me.cybermaxke.merchants.v1502;
 
 import java.util.Collections;
 import java.util.Set;
 import java.util.WeakHashMap;
 
-import me.cybermaxke.merchants.api.MerchantOffer;
-import net.minecraft.server.v1_8_R1.ItemStack;
-import net.minecraft.server.v1_8_R1.MerchantRecipe;
+import org.bukkit.craftbukkit.v1_5_R3.inventory.CraftItemStack;
 
-import org.bukkit.craftbukkit.v1_8_R1.inventory.CraftItemStack;
+import net.minecraft.server.v1_5_R3.ItemStack;
+import net.minecraft.server.v1_5_R3.MerchantRecipe;
+import me.cybermaxke.merchants.api.MerchantOffer;
 
 import com.google.common.base.Optional;
 
@@ -159,17 +159,7 @@ public class SMerchantOffer extends MerchantRecipe implements MerchantOffer {
 	}
 
 	@Override
-	public int e() {
-		return this.uses;
-	}
-
-	@Override
-	public int f() {
-		return this.maxUses < 0 ? Integer.MAX_VALUE : this.maxUses;
-	}
-
-	@Override
-	public void g() {
+	public void f() {
 		this.addUses(1);
 	}
 
@@ -179,12 +169,7 @@ public class SMerchantOffer extends MerchantRecipe implements MerchantOffer {
 	}
 
 	@Override
-	public boolean h() {
+	public boolean g() {
 		return this.isLocked();
-	}
-
-	@Override
-	public boolean j() {
-		return false;
 	}
 }
