@@ -18,6 +18,8 @@
  */
 package me.cybermaxke.merchants.v1710;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.Collections;
 import java.util.Set;
 import java.util.WeakHashMap;
@@ -31,6 +33,12 @@ import me.cybermaxke.merchants.api.MerchantOffer;
 import com.google.common.base.Optional;
 
 public class SMerchantOffer extends MerchantRecipe implements MerchantOffer {
+	private static Field fieldUses;
+	private static Field fieldMaxUses;
+
+	// Whether they are changed by spigot from private to public
+	private static boolean publicFields;
+
 	// The merchants this offer is added to
 	private final Set<SMerchant> merchants = Collections.newSetFromMap(new WeakHashMap<SMerchant, Boolean>());
 
@@ -38,8 +46,8 @@ public class SMerchantOffer extends MerchantRecipe implements MerchantOffer {
 	private final org.bukkit.inventory.ItemStack item2;
 	private final org.bukkit.inventory.ItemStack result;
 
-	private int maxUses = -1;
-	private int uses;
+	private int maxUses0 = -1;
+	private int uses0;
 
 	public SMerchantOffer(org.bukkit.inventory.ItemStack result, org.bukkit.inventory.ItemStack item1, org.bukkit.inventory.ItemStack item2) {
 		super(null, null, null);
@@ -49,22 +57,40 @@ public class SMerchantOffer extends MerchantRecipe implements MerchantOffer {
 		this.item2 = item2;
 	}
 
-	/**
-	 * Links the offer to the merchant.
-	 * 
-	 * @param merchant the merchant
-	 */
+	// Links the offer to the merchant.
 	void add(SMerchant merchant) {
 		this.merchants.add(merchant);
 	}
 
-	/**
-	 * Unlinks the offer from the merchant.
-	 * 
-	 * @param merchant the merchant
-	 */
+	// Unlinks the offer from the merchant.
 	void remove(SMerchant merchant) {
 		this.merchants.remove(merchant);
+	}
+
+	// Copies the uses from this class to the underlying fields
+	void copyUses() {
+		if (fieldUses == null) {
+			try {
+				fieldUses = MerchantRecipe.class.getDeclaredField("uses");
+				fieldMaxUses = MerchantRecipe.class.getDeclaredField("maxUses");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+			publicFields = Modifier.isPublic(fieldUses.getModifiers());
+		}
+
+		if (!publicFields) {
+			fieldUses.setAccessible(true);
+			fieldMaxUses.setAccessible(true);
+		}
+
+		try {
+			fieldUses.set(this, this.uses0);
+			fieldMaxUses.set(this, this.maxUses0 < 0 ? Integer.MAX_VALUE : this.maxUses0);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -88,7 +114,7 @@ public class SMerchantOffer extends MerchantRecipe implements MerchantOffer {
 
 	@Override
 	public int getMaxUses() {
-		return this.maxUses;
+		return this.maxUses0;
 	}
 
 	@Override
@@ -96,7 +122,7 @@ public class SMerchantOffer extends MerchantRecipe implements MerchantOffer {
 		// Get the state before
 		boolean locked0 = this.isLocked();
 		// Set the max uses
-		this.maxUses = uses;
+		this.maxUses0 = uses;
 		// Get the state after
 		boolean locked1 = this.isLocked();
 
@@ -110,14 +136,14 @@ public class SMerchantOffer extends MerchantRecipe implements MerchantOffer {
 
 	@Override
 	public void addMaxUses(int extra) {
-		if (this.maxUses >= 0) {
-			this.setMaxUses(this.maxUses + extra);
+		if (this.maxUses0 >= 0) {
+			this.setMaxUses(this.maxUses0 + extra);
 		}
 	}
 
 	@Override
 	public int getUses() {
-		return this.uses;
+		return this.uses0;
 	}
 
 	@Override
@@ -125,7 +151,7 @@ public class SMerchantOffer extends MerchantRecipe implements MerchantOffer {
 		// Get the state before
 		boolean locked0 = this.isLocked();
 		// Add the uses
-		this.uses += uses;
+		this.uses0 += uses;
 		// Get the state after
 		boolean locked1 = this.isLocked();
 
@@ -139,7 +165,7 @@ public class SMerchantOffer extends MerchantRecipe implements MerchantOffer {
 
 	@Override
 	public boolean isLocked() {
-		return this.maxUses >= 0 && this.uses >= this.maxUses;
+		return this.maxUses0 >= 0 && this.uses0 >= this.maxUses0;
 	}
 
 	@Override

@@ -153,7 +153,7 @@ public class SMerchant implements IMerchant, Merchant {
 			player0.playerConnection.sendPacket(new PacketPlayOutOpenWindow(window, 6, this.title, 3, true));
 
 			// Write the recipe list
-			PacketDataSerializer content = new PacketDataSerializer(Unpooled.buffer());
+			PacketDataSerializer content = new PacketDataSerializer(Unpooled.buffer(), player0.playerConnection.networkManager.getVersion());
 			content.writeInt(window);
 			this.offers.a(content);
 
@@ -218,14 +218,38 @@ public class SMerchant implements IMerchant, Merchant {
 			return;
 		}
 
+		Collection<EntityPlayer>[] collections = this.split(this.customers);
+
+		// Copy the uses fields if needed
+		if (collections[1] != null || collections[2] != null || collections[3] != null) {
+			for (Object offer : this.offers) {
+				((SMerchantOffer) offer).copyUses();
+			}
+		}
+
+		if (collections[0] != null) {
+			this.sendUpdateWithProtocol(27, collections[0]);
+		}
+		if (collections[1] != null) {
+			this.sendUpdateWithProtocol(28, collections[1]);
+		}
+		if (collections[2] != null) {
+			this.sendUpdateWithProtocol(29, collections[2]);
+		}
+		if (collections[3] != null) {
+			this.sendUpdateWithProtocol(47, collections[3]);
+		}
+	}
+
+	void sendUpdateWithProtocol(int protocol, Iterable<EntityPlayer> players) {
 		// Write the recipe list
-		PacketDataSerializer content0 = new PacketDataSerializer(Unpooled.buffer());
+		PacketDataSerializer content0 = new PacketDataSerializer(Unpooled.buffer(), protocol);
 		this.offers.a(content0);
 
 		// Send a packet to all the players
-		Iterator<Player> it = this.customers.iterator();
+		Iterator<EntityPlayer> it = players.iterator();
 		while (it.hasNext()) {
-			EntityPlayer player0 = ((CraftPlayer) it.next()).getHandle();
+			EntityPlayer player0 = it.next();
 
 			// Every player has a different window id
 			PacketDataSerializer content1 = new PacketDataSerializer(Unpooled.buffer());
@@ -234,6 +258,44 @@ public class SMerchant implements IMerchant, Merchant {
 
 			player0.playerConnection.sendPacket(new PacketPlayOutCustomPayload("MC|TrList", content1));
 		}
+	}
+
+	Collection<EntityPlayer>[] split(Iterable<Player> players) {
+		Collection<EntityPlayer> list0 = null;
+		Collection<EntityPlayer> list1 = null;
+		Collection<EntityPlayer> list2 = null;
+		Collection<EntityPlayer> list3 = null;
+
+		Iterator<Player> it = players.iterator();
+		while (it.hasNext()) {
+			EntityPlayer player0 = ((CraftPlayer) it.next()).getHandle();
+
+			int version = player0.playerConnection.networkManager.getVersion();
+			if (version < 28) {
+				if (list0 == null) {
+					list0 = Lists.newArrayList();
+				}
+				list0.add(player0);
+			} else if (version < 29) {
+				if (list1 == null) {
+					list1 = Lists.newArrayList();
+				}
+				list1.add(player0);
+			} else if (version < 47) {
+				if (list2 == null) {
+					list2 = Lists.newArrayList();
+				}
+				list2.add(player0);
+			} else {
+				if (list3 == null) {
+					list3 = Lists.newArrayList();
+				}
+				list3.add(player0);
+			}
+		}
+
+		// list0 < 28; list1 < 29; list3 < 47; list4 >= 47
+		return new Collection[] { list0, list1, list2, list3 };
 	}
 
 }
