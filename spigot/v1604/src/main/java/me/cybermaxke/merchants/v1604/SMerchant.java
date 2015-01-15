@@ -119,6 +119,9 @@ public class SMerchant implements IMerchant, Merchant {
 	@Override
 	public void sortOffers(Comparator<MerchantOffer> comparator) {
 		Collections.sort(this.offers, comparator);
+
+		// Send the new offer list
+		this.sendUpdate();
 	}
 
 	@Override
