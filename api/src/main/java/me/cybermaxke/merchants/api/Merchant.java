@@ -34,6 +34,29 @@ public interface Merchant {
 	String getTitle();
 
 	/**
+	 * Adds the trade listener to the merchant.
+	 * 
+	 * @param listener the listener
+	 * @return true if not added before
+	 */
+	boolean addListener(MerchantTradeListener listener);
+
+	/**
+	 * Removes the trade listener to the merchant.
+	 * 
+	 * @param listener the listener
+	 * @return true if added before
+	 */
+	boolean removeListener(MerchantTradeListener listener);
+
+	/**
+	 * Gets the trade listeners of the merchant.
+	 * 
+	 * @return the trade listeners
+	 */
+	Collection<MerchantTradeListener> getListeners();
+
+	/**
 	 * Adds a new offer to the merchant.
 	 * 
 	 * @param offer the offer

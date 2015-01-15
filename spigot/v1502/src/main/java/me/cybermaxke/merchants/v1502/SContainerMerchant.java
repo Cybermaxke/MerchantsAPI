@@ -25,7 +25,6 @@ import net.minecraft.server.v1_5_R3.EntityHuman;
 import net.minecraft.server.v1_5_R3.EntityPlayer;
 import net.minecraft.server.v1_5_R3.InventoryMerchant;
 import net.minecraft.server.v1_5_R3.Slot;
-import net.minecraft.server.v1_5_R3.SlotMerchantResult;
 
 import org.bukkit.entity.Player;
 
@@ -54,7 +53,7 @@ public class SContainerMerchant extends ContainerMerchant {
 
 		this.setSlot(0, new Slot(inventory, 0, 36, 53));
 		this.setSlot(1, new Slot(inventory, 1, 62, 53));
-		this.setSlot(2, new SlotMerchantResult(customer, merchant, inventory, 2, 120, 53));
+		this.setSlot(2, new SSlotMerchantResult(customer, merchant, inventory, 2, 120, 53));
 
 		fieldInventoryMerchant.setAccessible(true);
 		fieldInventoryMerchant.set(this, inventory);

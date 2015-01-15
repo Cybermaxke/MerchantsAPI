@@ -37,6 +37,7 @@ import com.google.common.collect.Sets;
 
 import me.cybermaxke.merchants.api.Merchant;
 import me.cybermaxke.merchants.api.MerchantOffer;
+import me.cybermaxke.merchants.api.MerchantTradeListener;
 import net.minecraft.server.v1_8_R1.Container;
 import net.minecraft.server.v1_8_R1.EntityHuman;
 import net.minecraft.server.v1_8_R1.EntityPlayer;
@@ -60,6 +61,12 @@ public class SMerchant implements IMerchant, Merchant {
 	// The title of the merchant
 	private final String title;
 
+	// The trade handlers
+	Set<MerchantTradeListener> handlers = Sets.newHashSet();
+
+	// Internal flag
+	SMerchantOffer onTrade;
+
 	public SMerchant(String title) {
 		this.title = title;
 	}
@@ -67,6 +74,21 @@ public class SMerchant implements IMerchant, Merchant {
 	@Override
 	public String getTitle() {
 		return this.title;
+	}
+
+	@Override
+	public boolean addListener(MerchantTradeListener handler) {
+		return this.handlers.add(handler);
+	}
+
+	@Override
+	public boolean removeListener(MerchantTradeListener handler) {
+		return this.handlers.remove(handler);
+	}
+
+	@Override
+	public Collection<MerchantTradeListener> getListeners() {
+		return this.handlers;
 	}
 
 	@Override
@@ -202,8 +224,8 @@ public class SMerchant implements IMerchant, Merchant {
 	}
 
 	@Override
-	public void a(MerchantRecipe arg0) {
-		// Not used
+	public void a(MerchantRecipe recipe) {
+		this.onTrade = (SMerchantOffer) recipe;
 	}
 
 	@Override
