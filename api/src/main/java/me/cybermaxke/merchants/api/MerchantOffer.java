@@ -91,4 +91,11 @@ public interface MerchantOffer {
 	 */
 	boolean isLocked();
 
+	/**
+	 * Clones the merchant offer.
+	 * 
+	 * @return the clone
+	 */
+	MerchantOffer clone();
+
 }

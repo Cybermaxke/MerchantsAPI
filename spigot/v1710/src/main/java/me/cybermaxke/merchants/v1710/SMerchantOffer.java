@@ -206,4 +206,17 @@ public class SMerchantOffer extends MerchantRecipe implements MerchantOffer {
 	public boolean g() {
 		return this.isLocked();
 	}
+
+	@Override
+	public SMerchantOffer clone() {
+		org.bukkit.inventory.ItemStack result = this.result.clone();
+		org.bukkit.inventory.ItemStack item1 = this.item1.clone();
+		org.bukkit.inventory.ItemStack item2 = this.item2 != null ? this.item2.clone() : null;
+
+		SMerchantOffer clone = new SMerchantOffer(result, item1, item2);
+		clone.maxUses0 = this.maxUses0;
+		clone.uses0 = this.uses0;
+
+		return clone;
+	}
 }
