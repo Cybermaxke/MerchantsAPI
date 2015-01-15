@@ -87,6 +87,12 @@ public interface MerchantOffer {
 	 * Gets whether the offer is locked. This will happen if the amount of
 	 * uses exceeds the maximum amount of uses.
 	 * 
+	 * <p>
+	 * This feature will only work for versions 1.4+, since
+	 * that was the first version that supported locked offers.
+	 * If the version is older, it will always return false.
+	 * </p>
+	 * 
 	 * @return is locked
 	 */
 	boolean isLocked();

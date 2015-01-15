@@ -16,27 +16,21 @@
  * You should have received a copy of the GNU General Public License
  * along with MerchantsAPI. If not, see <http://www.gnu.org/licenses/>.
  */
-package me.cybermaxke.merchants.v1710;
+package me.cybermaxke.merchants.v1302;
 
 import me.cybermaxke.merchants.api.Merchant;
 import me.cybermaxke.merchants.api.MerchantAPI;
 import me.cybermaxke.merchants.api.MerchantOffer;
 import me.cybermaxke.merchants.api.Merchants;
 
-import org.apache.commons.lang.StringUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class SMerchantPlugin extends JavaPlugin implements MerchantAPI {
-	public static boolean SPIGOT = true;
 
 	@Override
 	public void onEnable() {
 		Merchants.set(this);
-
-		// Check for spigot
-		SPIGOT = StringUtils.containsIgnoreCase(Bukkit.getVersion(), "Spigot");
 	}
 
 	@Override
