@@ -46,6 +46,14 @@ public class SSlotMerchantResult extends SlotMerchantResult {
 
 		// Catch the on trade
 		if (this.merchant.onTrade != null) {
+			// This will cause the update to be send to all the players
+			// except the user, that is done client side since 1.8
+			this.merchant.onTradePlayer = (EntityPlayer) human;
+			// Increment uses
+			this.merchant.onTrade.g();
+			// Reset the field for the gc
+			this.merchant.onTradePlayer = null;
+
 			for (MerchantTradeListener handler : this.merchant.handlers) {
 				handler.onTrade(this.merchant, this.merchant.onTrade, (Player) human.getBukkitEntity());
 			}

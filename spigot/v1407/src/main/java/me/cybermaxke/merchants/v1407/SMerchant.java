@@ -18,6 +18,8 @@
  */
 package me.cybermaxke.merchants.v1407;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -75,46 +77,55 @@ public class SMerchant implements IMerchant, Merchant {
 	}
 
 	@Override
-	public boolean addListener(MerchantTradeListener handler) {
-		return this.handlers.add(handler);
+	public boolean addListener(MerchantTradeListener listener) {
+		checkNotNull(listener, "The listener cannot be null!");
+		return this.handlers.add(listener);
 	}
 
 	@Override
-	public boolean removeListener(MerchantTradeListener handler) {
-		return this.handlers.remove(handler);
+	public boolean removeListener(MerchantTradeListener listener) {
+		checkNotNull(listener, "The listener cannot be null!");
+		return this.handlers.remove(listener);
 	}
 
 	@Override
 	public Collection<MerchantTradeListener> getListeners() {
-		return this.handlers;
+		return Lists.newArrayList(this.handlers);
 	}
 
 	@Override
 	public void removeOffer(MerchantOffer offer) {
-		this.offers.remove(offer);
+		checkNotNull(offer, "The offer cannot be null!");
 
-		// Link the offer
-		((SMerchantOffer) offer).remove(this);
+		if (this.offers.remove(offer)) {
+			// Unlink the offer
+			((SMerchantOffer) offer).remove(this);
 
-		// Send the new offer list
-		this.sendUpdate();
+			// Send the new offer list
+			this.sendUpdate();
+		}
 	}
 
 	@Override
 	public void removeOffers(Iterable<MerchantOffer> offers) {
-		this.offers.removeAll((Lists.newArrayList(offers)));
+		checkNotNull(offers, "The offers cannot be null!");
 
-		// Link the offers
-		for (MerchantOffer offer : offers) {
-			((SMerchantOffer) offer).remove(this);
+		if (this.offers.removeAll((Lists.newArrayList(offers)))) {
+			// Unlink the offers
+			for (MerchantOffer offer : offers) {
+				((SMerchantOffer) offer).remove(this);
+			}
+
+			// Send the new offer list
+			this.sendUpdate();
 		}
-
-		// Send the new offer list
-		this.sendUpdate();
 	}
 
 	@Override
 	public void addOffer(MerchantOffer offer) {
+		checkNotNull(offer, "The offer cannot be null!");
+
+		// Add the offer
 		this.offers.add(offer);
 
 		// Link the offer
@@ -126,6 +137,9 @@ public class SMerchant implements IMerchant, Merchant {
 
 	@Override
 	public void addOffers(Iterable<MerchantOffer> offers) {
+		checkNotNull(offers, "The offers cannot be null!");
+
+		// Add the offers
 		this.offers.addAll(Lists.newArrayList(offers));
 
 		// Link the offers
@@ -139,6 +153,14 @@ public class SMerchant implements IMerchant, Merchant {
 
 	@Override
 	public void sortOffers(Comparator<MerchantOffer> comparator) {
+		checkNotNull(comparator, "The comparator cannot be null!");
+
+		// Only sort if necessary
+		if (this.offers.size() <= 1) {
+			return;
+		}
+
+		// Sort the offers
 		Collections.sort(this.offers, comparator);
 
 		// Send the new offer list
@@ -152,6 +174,8 @@ public class SMerchant implements IMerchant, Merchant {
 
 	@Override
 	public boolean addCustomer(Player player) {
+		checkNotNull(player, "The player cannot be null!");
+
 		if (this.customers.add(player)) {
 			EntityPlayer player0 = ((CraftPlayer) player).getHandle();
 			Container container0 = null;
@@ -202,6 +226,8 @@ public class SMerchant implements IMerchant, Merchant {
 
 	@Override
 	public boolean removeCustomer(Player player) {
+		checkNotNull(player, "The player cannot be null!");
+
 		if (this.customers.remove(player)) {
 			player.closeInventory();
 			return true;
@@ -212,6 +238,7 @@ public class SMerchant implements IMerchant, Merchant {
 
 	@Override
 	public boolean hasCustomer(Player player) {
+		checkNotNull(player, "The player cannot be null!");
 		return this.customers.contains(player);
 	}
 
@@ -227,6 +254,10 @@ public class SMerchant implements IMerchant, Merchant {
 
 	@Override
 	public void a(MerchantRecipe recipe) {
+		// Increment uses
+		recipe.f();
+
+		// Used by the custom merchant result slot
 		this.onTrade = (SMerchantOffer) recipe;
 	}
 

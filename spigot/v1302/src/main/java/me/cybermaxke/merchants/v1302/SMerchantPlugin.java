@@ -26,6 +26,8 @@ import me.cybermaxke.merchants.api.Merchants;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 public class SMerchantPlugin extends JavaPlugin implements MerchantAPI {
 
 	@Override
@@ -35,16 +37,23 @@ public class SMerchantPlugin extends JavaPlugin implements MerchantAPI {
 
 	@Override
 	public Merchant newMerchant(String title) {
+		checkNotNull(title, "The title cannot be null!");
 		return new SMerchant(title);
 	}
 
 	@Override
 	public MerchantOffer newOffer(ItemStack result, ItemStack item1, ItemStack item2) {
+		checkNotNull(result, "The result cannot be null!");
+		checkNotNull(item1, "The first item cannot be null!");
+
 		return new SMerchantOffer(result, item1, item2);
 	}
 
 	@Override
 	public MerchantOffer newOffer(ItemStack result, ItemStack item1) {
+		checkNotNull(result, "The result cannot be null!");
+		checkNotNull(item1, "The first item cannot be null!");
+
 		return new SMerchantOffer(result, item1, null);
 	}
 
