@@ -18,17 +18,15 @@ repositories {
 	maven {
 		url 'http://repo.bukkit.org/content/groups/public/'
 	}
-
-	// Local dependencies
-	flatDir {
-        dirs 'lib'
-    }
+	maven {
+		url 'https://dl.dropboxusercontent.com/u/56755498/repository/spigot/'
+	}
 }
 
 // Dependencies
 dependencies {
 	compile project(':merchants-api')
-	compile name: 'spigot-1.5.2'
+	compile 'org.spigotmc:spigot:1.5.2'
 }
 
 jar {
