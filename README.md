@@ -5,5 +5,5 @@ The merchants api is a expansion of the bukkit api to be able to create custom m
 
 More info is available at the [wiki][Wiki].
 
-[Home]: https://github.com/Cybermaxke/Merchants
-[Wiki]: https://github.com/Cybermaxke/Merchants/wiki
+[Home]: https://github.com/Cybermaxke/MerchantsAPI
+[Wiki]: https://github.com/Cybermaxke/MerchantsAPI/wiki
