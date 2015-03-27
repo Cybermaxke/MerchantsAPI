@@ -7,6 +7,7 @@ include 'merchants-spigot-v1502'
 include 'merchants-spigot-v1604'
 include 'merchants-spigot-v1710'
 include 'merchants-spigot-v1800'
+include 'merchants-spigot-v1803'
 
 project(':merchants-api').projectDir = new File('api')
 project(':merchants-spigot-v1302').projectDir = new File('spigot/v1302')
@@ -15,3 +16,4 @@ project(':merchants-spigot-v1502').projectDir = new File('spigot/v1502')
 project(':merchants-spigot-v1604').projectDir = new File('spigot/v1604')
 project(':merchants-spigot-v1710').projectDir = new File('spigot/v1710')
 project(':merchants-spigot-v1800').projectDir = new File('spigot/v1800')
+project(':merchants-spigot-v1803').projectDir = new File('spigot/v1803')
