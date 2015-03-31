@@ -40,6 +40,7 @@ import net.minecraft.util.io.netty.buffer.Unpooled;
 import org.bukkit.craftbukkit.v1_7_R4.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_7_R4.event.CraftEventFactory;
 import org.bukkit.entity.Player;
+import org.json.simple.parser.ParseException;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
@@ -49,7 +50,6 @@ import com.google.common.collect.Sets;
 import me.cybermaxke.merchants.api.Merchant;
 import me.cybermaxke.merchants.api.MerchantOffer;
 import me.cybermaxke.merchants.api.MerchantTradeListener;
-
 import static com.google.common.base.Preconditions.checkNotNull;
 import static me.cybermaxke.merchants.v1710.SMerchantPlugin.SPIGOT;
 
@@ -62,7 +62,11 @@ public class SMerchant implements IMerchant, Merchant {
 	private final Set<Player> customers = Sets.newHashSet();
 
 	// The title of the merchant
-	private final String title;
+	private String title;
+	private boolean jsonTitle;
+	
+	// The title that will be send
+	private String sendTitle;
 
 	// The trade handlers
 	Set<MerchantTradeListener> handlers = Sets.newHashSet();
@@ -70,13 +74,45 @@ public class SMerchant implements IMerchant, Merchant {
 	// Internal flag
 	SMerchantOffer onTrade;
 
-	public SMerchant(String title) {
-		this.title = title;
+	public SMerchant(String title, boolean jsonTitle) {
+		this.setTitle(title, jsonTitle);
 	}
 
 	@Override
 	public String getTitle() {
 		return this.title;
+	}
+	
+	@Override
+	public boolean isTitleJson() {
+		return this.jsonTitle;
+	}
+	
+	@Override
+	public void setTitle(String title, boolean jsonTitle) {
+		checkNotNull(title, "The title cannot be null!");
+		
+		this.jsonTitle = jsonTitle;
+		this.title = title;
+		
+		if (jsonTitle) {
+			try {
+				this.sendTitle = SUtil.fromJson(title);
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+		} else {
+			this.sendTitle = title;
+		}
+		
+		if (this.sendTitle.length() > 32) {
+			this.sendTitle = this.sendTitle.substring(0, 32);
+		}
+	}
+
+	@Override
+	public void setTitle(String title) {
+		this.setTitle(title, false);
 	}
 
 	@Override
@@ -202,7 +238,7 @@ public class SMerchant implements IMerchant, Merchant {
 			player0.activeContainer.addSlotListener(player0);
 
 			// Open the window
-			player0.playerConnection.sendPacket(new PacketPlayOutOpenWindow(window, 6, this.title, 3, true));
+			player0.playerConnection.sendPacket(new PacketPlayOutOpenWindow(window, 6, this.sendTitle, 3, true));
 
 			// Write the recipe list
 			PacketDataSerializer content;
@@ -376,5 +412,4 @@ public class SMerchant implements IMerchant, Merchant {
 		// list0 < 28; list1 < 29; list3 < 47; list4 >= 47
 		return new Collection[] { list0, list1, list2, list3 };
 	}
-
 }

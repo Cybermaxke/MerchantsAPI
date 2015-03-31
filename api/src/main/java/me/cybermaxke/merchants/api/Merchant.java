@@ -32,6 +32,28 @@ public interface Merchant {
 	 * @return the title
 	 */
 	String getTitle();
+	
+	/**
+	 * Gets whether the string in the json format is.
+	 * 
+	 * @return is title json
+	 */
+	boolean isTitleJson();
+	
+	/**
+	 * Sets the title of the merchant.
+	 * 
+	 * @param title the title
+	 * @param jsonTitle whether the title in json format is
+	 */
+	void setTitle(String title, boolean jsonTitle);
+	
+	/**
+	 * Sets the title of the merchant.
+	 * 
+	 * @param title the title
+	 */
+	void setTitle(String title);
 
 	/**
 	 * Adds the trade listener to the merchant.

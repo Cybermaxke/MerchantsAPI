@@ -72,6 +72,4 @@ nb-configuration.xml
 *.ipr
 *.iws
 
-# Spigot Lib Jar files #
-####################
-/spigot/**/lib/*.jar
+/openCmd.bat

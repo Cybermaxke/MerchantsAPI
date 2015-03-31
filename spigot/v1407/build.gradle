@@ -10,7 +10,7 @@ targetCompatibility = '1.6'
 // Basic project information
 group = 'cybermaxke'
 archivesBaseName = 'merchants-spigot-v1407'
-version = '1.0.1-SNAPSHOT'
+version = '1.1.0-SNAPSHOT'
 
 // Repositories
 repositories {

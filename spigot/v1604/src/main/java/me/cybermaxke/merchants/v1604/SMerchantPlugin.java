@@ -37,7 +37,13 @@ public class SMerchantPlugin extends JavaPlugin implements MerchantAPI {
 	@Override
 	public Merchant newMerchant(String title) {
 		checkNotNull(title, "The title cannot be null!");
-		return new SMerchant(title);
+		return new SMerchant(title, false);
+	}
+	
+	@Override
+	public Merchant newMerchant(String title, boolean jsonTitle) {
+		checkNotNull(title, "The title cannot be null!");
+		return new SMerchant(title, jsonTitle);
 	}
 
 	@Override

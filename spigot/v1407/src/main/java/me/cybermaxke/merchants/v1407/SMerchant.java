@@ -42,6 +42,7 @@ import net.minecraft.server.v1_4_R1.Packet250CustomPayload;
 import org.bukkit.craftbukkit.v1_4_R1.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_4_R1.event.CraftEventFactory;
 import org.bukkit.entity.Player;
+import org.json.simple.parser.ParseException;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
@@ -59,21 +60,57 @@ public class SMerchant implements IMerchant, Merchant {
 	private final Set<Player> customers = Sets.newHashSet();
 
 	// The title of the merchant
-	private final String title;
-
+	private String title;
+	private boolean jsonTitle;
+		
+	// The title that will be send
+	private String sendTitle;
+		
 	// The trade handlers
 	Set<MerchantTradeListener> handlers = Sets.newHashSet();
 
 	// Internal flag
 	SMerchantOffer onTrade;
 
-	public SMerchant(String title) {
+	public SMerchant(String title, boolean jsonTitle) {
+		this.setTitle(title, jsonTitle);
+	}
+
+	@Override
+	public void setTitle(String title, boolean jsonTitle) {
+		checkNotNull(title, "The title cannot be null!");
+			
+		this.jsonTitle = jsonTitle;
 		this.title = title;
+			
+		if (jsonTitle) {
+			try {
+				this.sendTitle = SUtil.fromJson(title);
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+		} else {
+			this.sendTitle = title;
+		}
+		
+		if (this.sendTitle.length() > 32) {
+			this.sendTitle = this.sendTitle.substring(0, 32);
+		}
+	}
+
+	@Override
+	public void setTitle(String title) {
+		this.setTitle(title, false);
 	}
 
 	@Override
 	public String getTitle() {
 		return this.title;
+	}
+		
+	@Override
+	public boolean isTitleJson() {
+		return this.jsonTitle;
 	}
 
 	@Override
@@ -199,7 +236,7 @@ public class SMerchant implements IMerchant, Merchant {
 			player0.activeContainer.addSlotListener(player0);
 
 			// Open the window
-			player0.playerConnection.sendPacket(new Packet100OpenWindow(window, 6, this.title, 3));
+			player0.playerConnection.sendPacket(new Packet100OpenWindow(window, 6, this.sendTitle, 3));
 
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
 			DataOutputStream dos = new DataOutputStream(baos);

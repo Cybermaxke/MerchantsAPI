@@ -39,6 +39,7 @@ import com.google.common.collect.Sets;
 import me.cybermaxke.merchants.api.Merchant;
 import me.cybermaxke.merchants.api.MerchantOffer;
 import me.cybermaxke.merchants.api.MerchantTradeListener;
+import net.minecraft.server.v1_8_R1.ChatSerializer;
 import net.minecraft.server.v1_8_R1.Container;
 import net.minecraft.server.v1_8_R1.EntityHuman;
 import net.minecraft.server.v1_8_R1.EntityPlayer;
@@ -60,7 +61,11 @@ public class SMerchant implements IMerchant, Merchant {
 	private final Set<Player> customers = Sets.newHashSet();
 
 	// The title of the merchant
-	private final String title;
+	private String title;
+	private boolean jsonTitle;
+	
+	// The title that will be send
+	private IChatBaseComponent sendTitle;
 
 	// The trade handlers
 	Set<MerchantTradeListener> handlers = Sets.newHashSet();
@@ -69,13 +74,38 @@ public class SMerchant implements IMerchant, Merchant {
 	SMerchantOffer onTrade;
 	EntityPlayer onTradePlayer;
 
-	public SMerchant(String title) {
+	public SMerchant(String title, boolean jsonTitle) {
+		this.jsonTitle = jsonTitle;
 		this.title = title;
 	}
 
 	@Override
 	public String getTitle() {
 		return this.title;
+	}
+	
+	@Override
+	public boolean isTitleJson() {
+		return this.jsonTitle;
+	}
+	
+	@Override
+	public void setTitle(String title, boolean jsonTitle) {
+		checkNotNull(title, "The title cannot be null!");
+		
+		this.jsonTitle = jsonTitle;
+		this.title = title;
+		
+		if (jsonTitle) {
+			this.sendTitle = ChatSerializer.a(this.title);
+		} else {
+			this.sendTitle = CraftChatMessage.fromString(this.title)[0];
+		}
+	}
+
+	@Override
+	public void setTitle(String title) {
+		this.setTitle(title, false);
 	}
 
 	@Override
@@ -201,7 +231,7 @@ public class SMerchant implements IMerchant, Merchant {
 			player0.activeContainer.addSlotListener(player0);
 
 			// Open the window
-			player0.playerConnection.sendPacket(new PacketPlayOutOpenWindow(window, "minecraft:villager", this.getScoreboardDisplayName(), 0));
+			player0.playerConnection.sendPacket(new PacketPlayOutOpenWindow(window, "minecraft:villager", this.sendTitle, 0));
 
 			// Write the recipe list
 			PacketDataSerializer content = new PacketDataSerializer(Unpooled.buffer());
@@ -247,7 +277,7 @@ public class SMerchant implements IMerchant, Merchant {
 
 	@Override
 	public IChatBaseComponent getScoreboardDisplayName() {
-		return CraftChatMessage.fromString(this.title)[0];
+		return this.sendTitle;
 	}
 
 	@Override
@@ -304,5 +334,4 @@ public class SMerchant implements IMerchant, Merchant {
 			player0.playerConnection.sendPacket(new PacketPlayOutCustomPayload("MC|TrList", content1));
 		}
 	}
-
 }

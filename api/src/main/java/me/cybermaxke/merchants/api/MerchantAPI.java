@@ -31,6 +31,15 @@ public interface MerchantAPI {
 	 * @return the merchant
 	 */
 	Merchant newMerchant(String title);
+	
+	/**
+	 * Creates a new merchant with the title.
+	 * 
+	 * @param title the title
+	 * @param jsonTitle title in json format
+	 * @return the merchant
+	 */
+	Merchant newMerchant(String title, boolean jsonTitle);
 
 	/**
 	 * Creates a new merchant offer with the trade items.
