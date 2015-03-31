@@ -92,6 +92,9 @@ public class SMerchant implements IMerchant, Merchant {
 	public void setTitle(String title, boolean jsonTitle) {
 		checkNotNull(title, "The title cannot be null!");
 		
+		// The old title
+		String oldTitle = this.sendTitle;
+		
 		this.jsonTitle = jsonTitle;
 		this.title = title;
 		
@@ -107,6 +110,11 @@ public class SMerchant implements IMerchant, Merchant {
 		
 		if (this.sendTitle.length() > 32) {
 			this.sendTitle = this.sendTitle.substring(0, 32);
+		}
+		
+		// Send a update
+		if (!this.sendTitle.equals(oldTitle)) {
+			this.sendTitleUpdate();
 		}
 	}
 
@@ -311,6 +319,15 @@ public class SMerchant implements IMerchant, Merchant {
 	public EntityHuman b() {
 		// Not used
 		return null;
+	}
+	
+	void sendTitleUpdate() {
+		// Re-send the open window message to update the window name
+		Iterator<Player> it = this.customers.iterator();
+		while (it.hasNext()) {
+			EntityPlayer player0 = ((CraftPlayer) it.next()).getHandle();
+			player0.playerConnection.sendPacket(new PacketPlayOutOpenWindow(player0.activeContainer.windowId, 6, this.sendTitle, 3, true));
+		}
 	}
 
 	// Called when the merchant requires a update

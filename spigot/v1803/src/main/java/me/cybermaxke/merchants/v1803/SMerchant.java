@@ -91,7 +91,10 @@ public class SMerchant implements IMerchant, Merchant {
 	@Override
 	public void setTitle(String title, boolean jsonTitle) {
 		checkNotNull(title, "The title cannot be null!");
-			
+		
+		// The old title
+		IChatBaseComponent oldTitle = this.sendTitle;
+		
 		this.jsonTitle = jsonTitle;
 		this.title = title;
 			
@@ -99,6 +102,11 @@ public class SMerchant implements IMerchant, Merchant {
 			this.sendTitle = ChatSerializer.a(this.title);
 		} else {
 			this.sendTitle = CraftChatMessage.fromString(this.title)[0];
+		}
+		
+		// Send a update
+		if (!this.sendTitle.equals(oldTitle)) {
+			this.sendTitleUpdate();
 		}
 	}
 
@@ -314,6 +322,15 @@ public class SMerchant implements IMerchant, Merchant {
 		return null;
 	}
 
+	void sendTitleUpdate() {
+		// Re-send the open window message to update the window name
+		Iterator<Player> it = this.customers.iterator();
+		while (it.hasNext()) {
+			EntityPlayer player0 = ((CraftPlayer) it.next()).getHandle();
+			player0.playerConnection.sendPacket(new PacketPlayOutOpenWindow(player0.activeContainer.windowId, "minecraft:villager", this.sendTitle, 0));
+		}
+	}
+	
 	// Called when the merchant requires a update
 	void sendUpdate() {
 		if (this.customers.isEmpty()) {
