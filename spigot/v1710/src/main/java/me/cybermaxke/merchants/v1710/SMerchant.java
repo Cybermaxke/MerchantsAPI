@@ -69,10 +69,10 @@ public class SMerchant implements IMerchant, Merchant {
 	private String sendTitle;
 
 	// The trade handlers
-	Set<MerchantTradeListener> handlers = Sets.newHashSet();
+	protected final Set<MerchantTradeListener> handlers = Sets.newHashSet();
 
-	// Internal flag
-	SMerchantOffer onTrade;
+	// Internal use only
+	protected SMerchantOffer onTrade;
 
 	public SMerchant(String title, boolean jsonTitle) {
 		this.setTitle(title, jsonTitle);
@@ -94,23 +94,25 @@ public class SMerchant implements IMerchant, Merchant {
 		
 		// The old title
 		String oldTitle = this.sendTitle;
-		
-		this.jsonTitle = jsonTitle;
-		this.title = title;
+		String newTitle;
 		
 		if (jsonTitle) {
 			try {
-				this.sendTitle = SUtil.fromJson(title);
+				newTitle = SUtil.fromJson(title);
 			} catch (ParseException e) {
-				e.printStackTrace();
+				throw new IllegalArgumentException("Invalid json format!", e);
 			}
 		} else {
-			this.sendTitle = title;
+			newTitle = title;
 		}
 		
-		if (this.sendTitle.length() > 32) {
-			this.sendTitle = this.sendTitle.substring(0, 32);
+		if (title.length() > 32) {
+			title = title.substring(0, 32);
 		}
+		
+		this.sendTitle = newTitle;
+		this.jsonTitle = jsonTitle;
+		this.title = title;
 		
 		// Send a update
 		if (!this.sendTitle.equals(oldTitle)) {
@@ -327,6 +329,7 @@ public class SMerchant implements IMerchant, Merchant {
 		while (it.hasNext()) {
 			EntityPlayer player0 = ((CraftPlayer) it.next()).getHandle();
 			player0.playerConnection.sendPacket(new PacketPlayOutOpenWindow(player0.activeContainer.windowId, 6, this.sendTitle, 3, true));
+			player0.updateInventory(player0.activeContainer);
 		}
 	}
 

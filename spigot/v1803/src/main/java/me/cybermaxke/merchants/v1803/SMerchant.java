@@ -31,6 +31,7 @@ import java.util.Set;
 import org.bukkit.craftbukkit.v1_8_R2.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_8_R2.event.CraftEventFactory;
 import org.bukkit.craftbukkit.v1_8_R2.util.CraftChatMessage;
+
 import org.bukkit.entity.Player;
 
 import com.google.common.collect.Lists;
@@ -39,6 +40,7 @@ import com.google.common.collect.Sets;
 import me.cybermaxke.merchants.api.Merchant;
 import me.cybermaxke.merchants.api.MerchantOffer;
 import me.cybermaxke.merchants.api.MerchantTradeListener;
+
 import net.minecraft.server.v1_8_R2.Container;
 import net.minecraft.server.v1_8_R2.EntityHuman;
 import net.minecraft.server.v1_8_R2.EntityPlayer;
@@ -67,11 +69,11 @@ public class SMerchant implements IMerchant, Merchant {
 	private IChatBaseComponent sendTitle;
 
 	// The trade handlers
-	Set<MerchantTradeListener> handlers = Sets.newHashSet();
+	protected final Set<MerchantTradeListener> handlers = Sets.newHashSet();
 
-	// Internal use
-	SMerchantOffer onTrade;
-	EntityPlayer onTradePlayer;
+	// Internal use only
+	protected SMerchantOffer onTrade;
+	protected EntityPlayer onTradePlayer;
 
 	public SMerchant(String title, boolean jsonTitle) {
 		this.jsonTitle = jsonTitle;
@@ -94,15 +96,21 @@ public class SMerchant implements IMerchant, Merchant {
 		
 		// The old title
 		IChatBaseComponent oldTitle = this.sendTitle;
+		IChatBaseComponent newTitle;
 		
+		if (jsonTitle) {
+			try {
+				newTitle = ChatSerializer.a(this.title);
+			} catch (Exception e) {
+				throw new IllegalArgumentException("Invalid json format!", e);
+			}
+		} else {
+			newTitle = CraftChatMessage.fromString(this.title)[0];
+		}
+		
+		this.sendTitle = newTitle;
 		this.jsonTitle = jsonTitle;
 		this.title = title;
-			
-		if (jsonTitle) {
-			this.sendTitle = ChatSerializer.a(this.title);
-		} else {
-			this.sendTitle = CraftChatMessage.fromString(this.title)[0];
-		}
 		
 		// Send a update
 		if (!this.sendTitle.equals(oldTitle)) {
@@ -328,6 +336,7 @@ public class SMerchant implements IMerchant, Merchant {
 		while (it.hasNext()) {
 			EntityPlayer player0 = ((CraftPlayer) it.next()).getHandle();
 			player0.playerConnection.sendPacket(new PacketPlayOutOpenWindow(player0.activeContainer.windowId, "minecraft:villager", this.sendTitle, 0));
+			player0.updateInventory(player0.activeContainer);
 		}
 	}
 	
