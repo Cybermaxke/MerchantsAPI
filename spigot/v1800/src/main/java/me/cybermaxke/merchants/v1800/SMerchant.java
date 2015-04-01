@@ -155,8 +155,13 @@ public class SMerchant implements IMerchant, Merchant {
 	@Override
 	public void removeOffers(Iterable<MerchantOffer> offers) {
 		checkNotNull(offers, "The offers cannot be null!");
+		
+		// Only update if necessary
+		if (!offers.iterator().hasNext()) {
+			return;
+		}
 
-		if (this.offers.removeAll((Lists.newArrayList(offers)))) {
+		if (this.offers.removeAll(Lists.newArrayList(offers))) {
 			// Unlink the offers
 			for (MerchantOffer offer : offers) {
 				((SMerchantOffer) offer).remove(this);

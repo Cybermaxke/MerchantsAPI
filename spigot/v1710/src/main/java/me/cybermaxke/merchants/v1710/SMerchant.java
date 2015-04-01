@@ -91,11 +91,11 @@ public class SMerchant implements IMerchant, Merchant {
 	@Override
 	public void setTitle(String title, boolean jsonTitle) {
 		checkNotNull(title, "The title cannot be null!");
-		
+
 		// The old title
 		String oldTitle = this.sendTitle;
 		String newTitle;
-		
+
 		if (jsonTitle) {
 			try {
 				newTitle = SUtil.fromJson(title);
@@ -105,15 +105,15 @@ public class SMerchant implements IMerchant, Merchant {
 		} else {
 			newTitle = title;
 		}
-		
+
 		if (title.length() > 32) {
 			title = title.substring(0, 32);
 		}
-		
+
 		this.sendTitle = newTitle;
 		this.jsonTitle = jsonTitle;
 		this.title = title;
-		
+
 		// Send a update
 		if (!this.sendTitle.equals(oldTitle)) {
 			this.sendTitleUpdate();
@@ -159,7 +159,12 @@ public class SMerchant implements IMerchant, Merchant {
 	public void removeOffers(Iterable<MerchantOffer> offers) {
 		checkNotNull(offers, "The offers cannot be null!");
 
-		if (this.offers.removeAll((Lists.newArrayList(offers)))) {
+		// Only update if necessary
+		if (!offers.iterator().hasNext()) {
+			return;
+		}
+
+		if (this.offers.removeAll(Lists.newArrayList(offers))) {
 			// Unlink the offers
 			for (MerchantOffer offer : offers) {
 				((SMerchantOffer) offer).remove(this);
@@ -194,6 +199,11 @@ public class SMerchant implements IMerchant, Merchant {
 		// Link the offers
 		for (MerchantOffer offer : offers) {
 			((SMerchantOffer) offer).add(this);
+		}
+
+		// Only update if necessary
+		if (!offers.iterator().hasNext()) {
+			return;
 		}
 
 		// Send the new offer list

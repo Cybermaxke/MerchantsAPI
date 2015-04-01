@@ -49,6 +49,9 @@ public class SMerchantOffer extends MerchantRecipe implements MerchantOffer {
 	private int maxUses0 = -1;
 	private int uses0;
 
+	private boolean maxUsesChange;
+	private boolean usesChange;
+
 	public SMerchantOffer(org.bukkit.inventory.ItemStack result, org.bukkit.inventory.ItemStack item1, org.bukkit.inventory.ItemStack item2) {
 		super(null, null, null);
 
@@ -58,17 +61,17 @@ public class SMerchantOffer extends MerchantRecipe implements MerchantOffer {
 	}
 
 	// Links the offer to the merchant.
-	void add(SMerchant merchant) {
+	protected void add(SMerchant merchant) {
 		this.merchants.add(merchant);
 	}
 
 	// Unlinks the offer from the merchant.
-	void remove(SMerchant merchant) {
+	protected void remove(SMerchant merchant) {
 		this.merchants.remove(merchant);
 	}
 
 	// Copies the uses from this class to the underlying fields
-	void copyUses() {
+	protected void copyUses() {
 		if (fieldUses == null) {
 			try {
 				fieldUses = MerchantRecipe.class.getDeclaredField("uses");
@@ -80,14 +83,21 @@ public class SMerchantOffer extends MerchantRecipe implements MerchantOffer {
 			publicFields = Modifier.isPublic(fieldUses.getModifiers());
 		}
 
-		if (!publicFields) {
-			fieldUses.setAccessible(true);
-			fieldMaxUses.setAccessible(true);
-		}
-
 		try {
-			fieldUses.set(this, this.uses0);
-			fieldMaxUses.set(this, this.maxUses0 < 0 ? Integer.MAX_VALUE : this.maxUses0);
+			if (this.usesChange) {
+				if (!publicFields) {
+					fieldUses.setAccessible(true);
+				}
+				fieldUses.set(this, this.uses0);
+			}
+			if (this.maxUsesChange) {
+				if (!publicFields) {
+					fieldMaxUses.setAccessible(true);
+				}
+				fieldMaxUses.set(this, this.maxUses0 < 0 ? Integer.MAX_VALUE : this.maxUses0);
+			}
+			this.usesChange = false;
+			this.maxUsesChange = false;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -119,6 +129,12 @@ public class SMerchantOffer extends MerchantRecipe implements MerchantOffer {
 
 	@Override
 	public void setMaxUses(int uses) {
+		if (uses == this.maxUses0) {
+			return;
+		}
+
+		// Track the change
+		this.maxUsesChange = true;
 		// Get the state before
 		boolean locked0 = this.isLocked();
 		// Set the max uses
@@ -148,6 +164,12 @@ public class SMerchantOffer extends MerchantRecipe implements MerchantOffer {
 
 	@Override
 	public void addUses(int uses) {
+		if (uses == 0) {
+			return;
+		}
+
+		// Track the change
+		this.usesChange = true;
 		// Get the state before
 		boolean locked0 = this.isLocked();
 		// Add the uses

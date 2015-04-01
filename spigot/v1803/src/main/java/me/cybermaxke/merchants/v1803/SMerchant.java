@@ -157,7 +157,12 @@ public class SMerchant implements IMerchant, Merchant {
 	public void removeOffers(Iterable<MerchantOffer> offers) {
 		checkNotNull(offers, "The offers cannot be null!");
 
-		if (this.offers.removeAll((Lists.newArrayList(offers)))) {
+		// Only update if necessary
+		if (offers.iterator().hasNext()) {
+			return;
+		}
+
+		if (this.offers.removeAll(Lists.newArrayList(offers))) {
 			// Unlink the offers
 			for (MerchantOffer offer : offers) {
 				((SMerchantOffer) offer).remove(this);
@@ -186,14 +191,15 @@ public class SMerchant implements IMerchant, Merchant {
 	public void addOffers(Iterable<MerchantOffer> offers) {
 		checkNotNull(offers, "The offers cannot be null!");
 
-		// Add the offers
+		// Add and link the offers
 		for (MerchantOffer offer : offers) {
 			this.offers.add((MerchantRecipe) offer);
-		}
-
-		// Link the offers
-		for (MerchantOffer offer : offers) {
 			((SMerchantOffer) offer).add(this);
+		}
+		
+		// Only update if necessary
+		if (!offers.iterator().hasNext()) {
+			return;
 		}
 
 		// Send the new offer list
