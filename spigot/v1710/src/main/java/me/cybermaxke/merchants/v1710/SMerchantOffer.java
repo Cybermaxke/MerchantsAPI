@@ -163,8 +163,8 @@ public class SMerchantOffer extends MerchantRecipe implements MerchantOffer {
 	}
 
 	@Override
-	public void addUses(int uses) {
-		if (uses == 0) {
+	public void setUses(int uses) {
+		if (this.uses0 == uses) {
 			return;
 		}
 
@@ -173,7 +173,7 @@ public class SMerchantOffer extends MerchantRecipe implements MerchantOffer {
 		// Get the state before
 		boolean locked0 = this.isLocked();
 		// Add the uses
-		this.uses0 += uses;
+		this.uses0 = uses;
 		// Get the state after
 		boolean locked1 = this.isLocked();
 
@@ -182,6 +182,13 @@ public class SMerchantOffer extends MerchantRecipe implements MerchantOffer {
 			for (SMerchant merchant : this.merchants) {
 				merchant.sendUpdate();
 			}
+		}
+	}
+
+	@Override
+	public void addUses(int uses) {
+		if (uses != 0) {
+			this.setUses(this.uses0 + uses);
 		}
 	}
 

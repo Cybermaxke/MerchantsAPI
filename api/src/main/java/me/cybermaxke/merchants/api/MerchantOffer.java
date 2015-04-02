@@ -75,6 +75,13 @@ public interface MerchantOffer {
 	 * @return the amount uses
 	 */
 	int getUses();
+	
+	/**
+	 * Sets the amount of uses of the merchant offer.
+	 * 
+	 * @param uses the uses
+	 */
+	void setUses(int uses);
 
 	/**
 	 * Adds the uses amount to the current uses of the merchant offer.
@@ -88,9 +95,10 @@ public interface MerchantOffer {
 	 * uses exceeds the maximum amount of uses.
 	 * 
 	 * <p>
-	 * This feature will only work for versions 1.4+, since
-	 * that was the first version that supported locked offers.
-	 * If the version is older, it will always return false.
+	 * This feature will be handled different in versions before 1.4,
+	 * because this the version was that the feature implemented was.
+	 * There is a workaround for this problem and when the offer locked
+	 * is it will be hidden from the offer list.
 	 * </p>
 	 * 
 	 * @return is locked

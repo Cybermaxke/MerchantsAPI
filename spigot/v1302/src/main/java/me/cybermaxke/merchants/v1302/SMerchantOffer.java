@@ -18,6 +18,10 @@
  */
 package me.cybermaxke.merchants.v1302;
 
+import java.util.Collections;
+import java.util.Set;
+import java.util.WeakHashMap;
+
 import org.bukkit.craftbukkit.inventory.CraftItemStack;
 
 import net.minecraft.server.ItemStack;
@@ -27,6 +31,9 @@ import me.cybermaxke.merchants.api.MerchantOffer;
 import com.google.common.base.Optional;
 
 public class SMerchantOffer extends MerchantRecipe implements MerchantOffer {
+	// The merchants this offer is added to
+	private final Set<SMerchant> merchants = Collections.newSetFromMap(new WeakHashMap<SMerchant, Boolean>());
+
 	private final org.bukkit.inventory.ItemStack item1;
 	private final org.bukkit.inventory.ItemStack item2;
 	private final org.bukkit.inventory.ItemStack result;
@@ -40,6 +47,19 @@ public class SMerchantOffer extends MerchantRecipe implements MerchantOffer {
 		this.result = result;
 		this.item1 = item1;
 		this.item2 = item2;
+	}
+
+	// Links the offer to the merchant.
+	protected void add(SMerchant merchant) {
+		this.merchants.add(merchant);
+		if (!this.isLocked()) {
+			merchant.dirtyFiltered = false;
+		}
+	}
+
+	// Unlinks the offer from the merchant.
+	protected void remove(SMerchant merchant) {
+		this.merchants.remove(merchant);
 	}
 
 	@Override
@@ -68,12 +88,29 @@ public class SMerchantOffer extends MerchantRecipe implements MerchantOffer {
 
 	@Override
 	public void setMaxUses(int uses) {
+		if (this.maxUses == uses) {
+			return;
+		}
+
+		// Get the state before
+		boolean locked0 = this.isLocked();
+		// Set the max uses
 		this.maxUses = uses;
+		// Get the state after
+		boolean locked1 = this.isLocked();
+
+		// Send the new offer list
+		if (locked0 != locked1) {
+			for (SMerchant merchant : this.merchants) {
+				merchant.dirtyFiltered = false;
+				merchant.sendUpdate();
+			}
+		}
 	}
 
 	@Override
 	public void addMaxUses(int extra) {
-		if (this.maxUses >= 0) {
+		if (this.maxUses >= 0 && extra != 0) {
 			this.setMaxUses(this.maxUses + extra);
 		}
 	}
@@ -84,13 +121,37 @@ public class SMerchantOffer extends MerchantRecipe implements MerchantOffer {
 	}
 
 	@Override
+	public void setUses(int uses) {
+		if (this.uses == uses) {
+			return;
+		}
+		
+		// Get the state before
+		boolean locked0 = this.isLocked();
+		// Add the uses
+		this.uses = uses;
+		// Get the state after
+		boolean locked1 = this.isLocked();
+
+		// Send the new offer list
+		if (locked0 != locked1) {
+			for (SMerchant merchant : this.merchants) {
+				merchant.dirtyFiltered = false;
+				merchant.sendUpdate();
+			}
+		}
+	}
+
+	@Override
 	public void addUses(int uses) {
-		this.uses += uses;
+		if (uses != 0) {
+			this.setUses(this.uses + uses);
+		}
 	}
 
 	@Override
 	public boolean isLocked() {
-		return false;
+		return this.maxUses >= 0 && this.maxUses >= this.uses;
 	}
 
 	@Override

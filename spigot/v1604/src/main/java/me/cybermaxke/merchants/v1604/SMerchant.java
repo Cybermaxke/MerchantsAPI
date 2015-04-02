@@ -335,7 +335,7 @@ public class SMerchant implements IMerchant, Merchant {
 		return null;
 	}
 
-	void sendTitleUpdate() {
+	protected void sendTitleUpdate() {
 		// Re-send the open window message to update the window name
 		Iterator<Player> it = this.customers.iterator();
 		while (it.hasNext()) {
@@ -346,7 +346,7 @@ public class SMerchant implements IMerchant, Merchant {
 	}
 	
 	// Called when the merchant requires a update
-	void sendUpdate() {
+	protected void sendUpdate() {
 		if (this.customers.isEmpty()) {
 			return;
 		}

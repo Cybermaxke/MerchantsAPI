@@ -333,7 +333,7 @@ public class SMerchant implements IMerchant, Merchant {
 		return null;
 	}
 	
-	void sendTitleUpdate() {
+	protected void sendTitleUpdate() {
 		// Re-send the open window message to update the window name
 		Iterator<Player> it = this.customers.iterator();
 		while (it.hasNext()) {
@@ -344,7 +344,7 @@ public class SMerchant implements IMerchant, Merchant {
 	}
 
 	// Called when the merchant requires a update
-	void sendUpdate() {
+	protected void sendUpdate() {
 		if (this.customers.isEmpty()) {
 			return;
 		}
@@ -383,11 +383,11 @@ public class SMerchant implements IMerchant, Merchant {
 		}
 	}
 
-	void sendUpdateWithProtocol(int protocol, Iterable<EntityPlayer> players) {
+	protected void sendUpdateWithProtocol(int protocol, Iterable<EntityPlayer> players) {
 		this.sendUpdateWithSerializer(new PacketDataSerializer(Unpooled.buffer(), protocol), players);
 	}
 
-	void sendUpdateWithSerializer(PacketDataSerializer serializer, Iterable<EntityPlayer> players) {
+	protected void sendUpdateWithSerializer(PacketDataSerializer serializer, Iterable<EntityPlayer> players) {
 		// Write the recipe list
 		this.offers.a(serializer);
 
@@ -405,7 +405,7 @@ public class SMerchant implements IMerchant, Merchant {
 		}
 	}
 
-	Collection<EntityPlayer>[] split(Iterable<Player> players) {
+	protected Collection<EntityPlayer>[] split(Iterable<Player> players) {
 		Collection<EntityPlayer> list0 = null;
 		Collection<EntityPlayer> list1 = null;
 		Collection<EntityPlayer> list2 = null;

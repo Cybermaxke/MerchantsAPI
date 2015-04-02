@@ -55,6 +55,7 @@ import me.cybermaxke.merchants.api.MerchantTradeListener;
 public class SMerchant implements IMerchant, Merchant {
 	// The recipes list
 	private final MerchantRecipeList offers = new MerchantRecipeList();
+	private MerchantRecipeList filtered = new MerchantRecipeList();
 
 	// The customers
 	private final Set<Player> customers = Sets.newHashSet();
@@ -71,6 +72,9 @@ public class SMerchant implements IMerchant, Merchant {
 
 	// Internal use only
 	protected SMerchantOffer onTrade;
+
+	// Whether the dirty list should be rebuild
+	protected boolean dirtyFiltered;
 
 	public SMerchant(String title, boolean jsonTitle) {
 		this.setTitle(title, jsonTitle);
@@ -145,6 +149,9 @@ public class SMerchant implements IMerchant, Merchant {
 		checkNotNull(offer, "The offer cannot be null!");
 
 		if (this.offers.remove(offer)) {
+			// Unlink the offer
+			((SMerchantOffer) offer).remove(this);
+
 			// Send the new offer list
 			this.sendUpdate();
 		}
@@ -160,6 +167,11 @@ public class SMerchant implements IMerchant, Merchant {
 		}
 
 		if (this.offers.removeAll(Lists.newArrayList(offers))) {
+			// Unlink the offers
+			for (MerchantOffer offer : offers) {
+				((SMerchantOffer) offer).remove(this);
+			}
+
 			// Send the new offer list
 			this.sendUpdate();
 		}
@@ -168,9 +180,16 @@ public class SMerchant implements IMerchant, Merchant {
 	@Override
 	public void addOffer(MerchantOffer offer) {
 		checkNotNull(offer, "The offer cannot be null!");
+		
+		if (this.offers.contains(offer)) {
+			return;
+		}
 
 		// Add the offer
 		this.offers.add(offer);
+
+		// Link the offer
+		((SMerchantOffer) offer).add(this);
 
 		// Send the new offer list
 		this.sendUpdate();
@@ -187,6 +206,15 @@ public class SMerchant implements IMerchant, Merchant {
 
 		// Add the offers
 		this.offers.addAll(Lists.newArrayList(offers));
+
+		// Link the offers
+		for (MerchantOffer offer : offers) {
+			if (this.offers.contains(offer)) {
+				continue;
+			}
+			this.offers.add(offer);
+			((SMerchantOffer) offer).add(this);
+		}
 
 		// Send the new offer list
 		this.sendUpdate();
@@ -249,7 +277,7 @@ public class SMerchant implements IMerchant, Merchant {
 				// Write the window id
 				dos.writeInt(window);
 				// Write the offers
-				this.offers.a(dos);
+				this.filterOffers().a(dos);
 				// Flush and close data stream
 				dos.flush();
 				dos.close();
@@ -312,8 +340,23 @@ public class SMerchant implements IMerchant, Merchant {
 		// Not used
 		return null;
 	}
-	
-	void sendTitleUpdate() {
+
+	protected MerchantRecipeList filterOffers() {
+		if (this.dirtyFiltered) {
+			return this.filtered;
+		}
+
+		this.filtered = new MerchantRecipeList();
+		for (Object offer : this.offers) {
+			if (!((SMerchantOffer) offer).isLocked()) {
+				this.filtered.add(offer);
+			}
+		}
+
+		return this.filtered;
+	}
+
+	protected void sendTitleUpdate() {
 		// Re-send the open window message to update the window name
 		Iterator<Player> it = this.customers.iterator();
 		while (it.hasNext()) {
@@ -324,7 +367,7 @@ public class SMerchant implements IMerchant, Merchant {
 	}
 
 	// Called when the merchant requires a update
-	void sendUpdate() {
+	protected void sendUpdate() {
 		if (this.customers.isEmpty()) {
 			return;
 		}
@@ -333,7 +376,7 @@ public class SMerchant implements IMerchant, Merchant {
 		DataOutputStream dos0 = new DataOutputStream(baos0);
 
 		// Write the recipe list
-		this.offers.a(dos0);
+		this.filterOffers().a(dos0);
 
 		try {
 			dos0.flush();
