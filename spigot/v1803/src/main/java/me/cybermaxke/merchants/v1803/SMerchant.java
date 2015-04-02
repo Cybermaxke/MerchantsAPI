@@ -177,6 +177,10 @@ public class SMerchant implements IMerchant, Merchant {
 	public void addOffer(MerchantOffer offer) {
 		checkNotNull(offer, "The offer cannot be null!");
 
+		if (this.offers.contains(offer)) {
+			return;
+		}
+
 		// Add the offer
 		this.offers.add((MerchantRecipe) offer);
 
@@ -190,16 +194,19 @@ public class SMerchant implements IMerchant, Merchant {
 	@Override
 	public void addOffers(Iterable<MerchantOffer> offers) {
 		checkNotNull(offers, "The offers cannot be null!");
-
-		// Add and link the offers
-		for (MerchantOffer offer : offers) {
-			this.offers.add((MerchantRecipe) offer);
-			((SMerchantOffer) offer).add(this);
-		}
 		
 		// Only update if necessary
 		if (!offers.iterator().hasNext()) {
 			return;
+		}
+
+		// Add and link the offers
+		for (MerchantOffer offer : offers) {
+			if (this.offers.contains(offer)) {
+				continue;
+			}
+			this.offers.add((MerchantRecipe) offer);
+			((SMerchantOffer) offer).add(this);
 		}
 
 		// Send the new offer list

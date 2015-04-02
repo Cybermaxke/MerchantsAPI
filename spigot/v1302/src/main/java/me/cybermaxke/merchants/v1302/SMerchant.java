@@ -207,7 +207,7 @@ public class SMerchant implements IMerchant, Merchant {
 		// Add the offers
 		this.offers.addAll(Lists.newArrayList(offers));
 
-		// Link the offers
+		// Add and link the offers
 		for (MerchantOffer offer : offers) {
 			if (this.offers.contains(offer)) {
 				continue;
@@ -353,6 +353,7 @@ public class SMerchant implements IMerchant, Merchant {
 			}
 		}
 
+		this.dirtyFiltered = true;
 		return this.filtered;
 	}
 
