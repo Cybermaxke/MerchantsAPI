@@ -151,16 +151,12 @@ public class SMerchantOffer extends MerchantRecipe implements MerchantOffer {
 
 	@Override
 	public ItemStack getBuyItem1() {
-		return CraftItemStack.asNMSCopy(this.item1);
+		return convertSafely(this.item1);
 	}
 
 	@Override
 	public ItemStack getBuyItem2() {
-		if (this.item2 == null) {
-			return null;
-		}
-
-		return CraftItemStack.asNMSCopy(this.item2);
+		return convertSafely(this.item2);
 	}
 
 	@Override
@@ -170,7 +166,7 @@ public class SMerchantOffer extends MerchantRecipe implements MerchantOffer {
 
 	@Override
 	public ItemStack getBuyItem3() {
-		return CraftItemStack.asNMSCopy(this.result);
+		return convertSafely(this.result);
 	}
 
 	@Override
@@ -199,5 +195,13 @@ public class SMerchantOffer extends MerchantRecipe implements MerchantOffer {
 		clone.uses = this.uses;
 
 		return clone;
+	}
+
+	@SuppressWarnings("deprecation")
+	private static ItemStack convertSafely(org.bukkit.inventory.ItemStack itemStack) {
+		if (itemStack == null || itemStack.getTypeId() == 0 || itemStack.getAmount() == 0) {
+			return null;
+		}
+		return CraftItemStack.asNMSCopy(itemStack);
 	}
 }
