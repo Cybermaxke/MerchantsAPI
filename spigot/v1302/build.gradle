@@ -10,7 +10,7 @@ targetCompatibility = '1.6'
 // Basic project information
 group = 'cybermaxke'
 archivesBaseName = 'merchants-spigot-v1302'
-version = '1.1.0-SNAPSHOT'
+version = '1.1.1-SNAPSHOT'
 
 // Repositories
 repositories {
@@ -76,4 +76,18 @@ processResources {
 	from(sourceSets.main.resources.srcDirs) {
 		exclude 'plugin.yml'
 	}
+}
+
+build.doLast {
+	tasks.cleanBuild.execute()
+	tasks.copyBuild.execute()
+}
+
+task cleanBuild(type: Delete) {
+	delete '../../build/' + project.archivesBaseName + '-' + project.version + '-release.jar'
+}
+
+task copyBuild(type: Copy) {
+	from 'build/libs/' + project.archivesBaseName + '-' + project.version + '-release.jar'
+	into '../../build'
 }

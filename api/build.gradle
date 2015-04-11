@@ -29,3 +29,17 @@ jar {
 	// classifier
 	classifier = 'release'
 }
+
+build.doLast {
+	tasks.cleanBuild.execute()
+	tasks.copyBuild.execute()
+}
+
+task cleanBuild(type: Delete) {
+	delete '../build/' + project.archivesBaseName + '-' + project.version + '-release.jar'
+}
+
+task copyBuild(type: Copy) {
+	from 'build/libs/' + project.archivesBaseName + '-' + project.version + '-release.jar'
+	into '../build'
+}
