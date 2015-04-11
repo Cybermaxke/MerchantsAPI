@@ -25,8 +25,8 @@ import org.bukkit.inventory.ItemStack;
 public class Merchants {
 	private static MerchantAPI instance;
 	
-	private static final String ERROR_SET_INSTANCE = "The merchants api is not loaded!";
-	private static final String ERROR_INSTANCE_MISSING = "The merchants api can only be set once!";
+	private static final String ERROR_INSTANCE_MISSING = "The merchants api is not loaded!";
+	private static final String ERROR_SET_INSTANCE = "The merchants api can only be set once!";
 
 	/**
 	 * Creates a new merchant with the title.
@@ -36,7 +36,7 @@ public class Merchants {
 	 */
 	public static Merchant newMerchant(String title) {
 		if (instance == null) {
-			throw new IllegalStateException(ERROR_SET_INSTANCE);
+			throw new IllegalStateException(ERROR_INSTANCE_MISSING);
 		}
 		
 		return instance.newMerchant(title);
@@ -51,7 +51,7 @@ public class Merchants {
 	 */
 	public static Merchant newMerchant(String title, boolean jsonTitle) {
 		if (instance == null) {
-			throw new IllegalStateException(ERROR_SET_INSTANCE);
+			throw new IllegalStateException(ERROR_INSTANCE_MISSING);
 		}
 		
 		return instance.newMerchant(title, jsonTitle);
@@ -67,7 +67,7 @@ public class Merchants {
 	 */
 	public static MerchantOffer newOffer(ItemStack result, ItemStack item1, @Nullable ItemStack item2) {
 		if (instance == null) {
-			throw new IllegalStateException(ERROR_SET_INSTANCE);
+			throw new IllegalStateException(ERROR_INSTANCE_MISSING);
 		}
 		
 		return instance.newOffer(result, item1, item2);
@@ -82,7 +82,7 @@ public class Merchants {
 	 */
 	public static MerchantOffer newOffer(ItemStack result, ItemStack item1) {
 		if (instance == null) {
-			throw new IllegalStateException(ERROR_SET_INSTANCE);
+			throw new IllegalStateException(ERROR_INSTANCE_MISSING);
 		}
 		
 		return instance.newOffer(result, item1);
@@ -104,7 +104,7 @@ public class Merchants {
 	 */
 	public static void set(MerchantAPI api) {
 		if (instance != null) {
-			throw new IllegalStateException(ERROR_INSTANCE_MISSING);
+			throw new IllegalStateException(ERROR_SET_INSTANCE);
 		}
 
 		instance = api;
