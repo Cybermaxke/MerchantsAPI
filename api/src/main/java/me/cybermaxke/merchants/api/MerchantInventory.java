@@ -16,24 +16,15 @@
  * You should have received a copy of the GNU General Public License
  * along with MerchantsAPI. If not, see <http://www.gnu.org/licenses/>.
  */
-package me.cybermaxke.merchants.v1502;
+package me.cybermaxke.merchants.api;
 
-import net.minecraft.server.v1_5_R3.EntityHuman;
-import net.minecraft.server.v1_5_R3.EntityPlayer;
-import net.minecraft.server.v1_5_R3.InventoryMerchant;
+public interface MerchantInventory extends org.bukkit.inventory.MerchantInventory {
 
-import org.bukkit.entity.Player;
+	/**
+	 * Gets the merchant that is assigned to this inventory.
+	 * 
+	 * @return the merchant
+	 */
+	Merchant getMerchant();
 
-public class SInventoryMerchant extends InventoryMerchant {
-	public final SMerchant merchant;
-
-	public SInventoryMerchant(EntityPlayer human, SMerchant merchant) {
-		super(human, merchant);
-		this.merchant = merchant;
-	}
-
-	@Override
-	public boolean a(EntityHuman human) {
-		return this.merchant.hasCustomer((Player) human.getBukkitEntity());
-	}
 }

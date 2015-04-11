@@ -25,7 +25,7 @@ import net.minecraft.server.v1_8_R1.EntityPlayer;
 import net.minecraft.server.v1_8_R1.InventoryMerchant;
 
 public class SInventoryMerchant extends InventoryMerchant {
-	private final SMerchant merchant;
+	public final SMerchant merchant;
 
 	public SInventoryMerchant(EntityPlayer human, SMerchant merchant) {
 		super(human, merchant);

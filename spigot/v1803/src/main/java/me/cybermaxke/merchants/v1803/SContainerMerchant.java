@@ -20,6 +20,7 @@ package me.cybermaxke.merchants.v1803;
 
 import java.lang.reflect.Field;
 
+import org.bukkit.craftbukkit.v1_8_R2.inventory.CraftInventoryView;
 import org.bukkit.entity.Player;
 
 import net.minecraft.server.v1_8_R2.ContainerMerchant;
@@ -34,6 +35,9 @@ public class SContainerMerchant extends ContainerMerchant {
 
 	// The merchant we are trading with
 	private final SMerchant merchant;
+
+	// The bukkit instance
+	private CraftInventoryView bukkitEntity;
 
 	public SContainerMerchant(EntityPlayer customer, SMerchant merchant) throws Exception {
 		super(customer.inventory, merchant, customer.world);
@@ -57,6 +61,8 @@ public class SContainerMerchant extends ContainerMerchant {
 
 		fieldInventoryMerchant.setAccessible(true);
 		fieldInventoryMerchant.set(this, inventory);
+
+		this.bukkitEntity = new CraftInventoryView(customer.getBukkitEntity(), new SCraftInventoryMerchant(inventory), this);
 	}
 
 	/**
@@ -71,6 +77,11 @@ public class SContainerMerchant extends ContainerMerchant {
 
 		// Override the slot at the index
 		this.c.set(index, slot);
+	}
+
+	@Override
+	public CraftInventoryView getBukkitView() {
+		return this.bukkitEntity;
 	}
 
 	@Override
