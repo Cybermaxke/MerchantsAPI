@@ -1,19 +1,19 @@
 rootProject.name = theName
 
 include 'merchants-api'
-include 'merchants-spigot-v1302'
-include 'merchants-spigot-v1407'
-include 'merchants-spigot-v1502'
-include 'merchants-spigot-v1604'
-include 'merchants-spigot-v1710'
-include 'merchants-spigot-v1800'
-include 'merchants-spigot-v1803'
+include 'merchants-spigot-v13r1'
+include 'merchants-spigot-v14r1'
+include 'merchants-spigot-v15r3'
+include 'merchants-spigot-v16r3'
+include 'merchants-spigot-v17r4'
+include 'merchants-spigot-v18r1'
+include 'merchants-spigot-v18r2'
 
 project(':merchants-api').projectDir = new File('api')
-project(':merchants-spigot-v1302').projectDir = new File('spigot/v1302')
-project(':merchants-spigot-v1407').projectDir = new File('spigot/v1407')
-project(':merchants-spigot-v1502').projectDir = new File('spigot/v1502')
-project(':merchants-spigot-v1604').projectDir = new File('spigot/v1604')
-project(':merchants-spigot-v1710').projectDir = new File('spigot/v1710')
-project(':merchants-spigot-v1800').projectDir = new File('spigot/v1800')
-project(':merchants-spigot-v1803').projectDir = new File('spigot/v1803')
+project(':merchants-spigot-v13r1').projectDir = new File('spigot/v13r1')
+project(':merchants-spigot-v14r1').projectDir = new File('spigot/v14r1')
+project(':merchants-spigot-v15r3').projectDir = new File('spigot/v15r3')
+project(':merchants-spigot-v16r3').projectDir = new File('spigot/v16r3')
+project(':merchants-spigot-v17r4').projectDir = new File('spigot/v17r4')
+project(':merchants-spigot-v18r1').projectDir = new File('spigot/v18r1')
+project(':merchants-spigot-v18r2').projectDir = new File('spigot/v18r2')
