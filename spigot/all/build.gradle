@@ -9,7 +9,7 @@ targetCompatibility = '1.6'
 
 // Basic project information
 group = 'cybermaxke'
-archivesBaseName = 'merchants-spigot-v13r1'
+archivesBaseName = 'merchants-spigot-all'
 version = '1.2-SNAPSHOT'
 
 // Repositories
@@ -26,12 +26,31 @@ repositories {
 // Dependencies
 dependencies {
 	compile project(':merchants-api')
-	compile 'org.spigotmc:spigot:1.3.2'
+	compile 'org.spigotmc:spigot:1.8.3'
 }
+
+evaluationDependsOn(':merchants-api')
+evaluationDependsOn(':merchants-spigot-v13r1')
+evaluationDependsOn(':merchants-spigot-v14r1')
+evaluationDependsOn(':merchants-spigot-v15r3')
+evaluationDependsOn(':merchants-spigot-v16r3')
+evaluationDependsOn(':merchants-spigot-v17r4')
+evaluationDependsOn(':merchants-spigot-v18r1')
+evaluationDependsOn(':merchants-spigot-v18r2')
 
 jar {
 	// Jar shading and packaging configuration
-	from { project(':merchants-api').sourceSets.main.output }
+	from(project(':merchants-api').sourceSets.main.output) {}
+	from(project(':merchants-spigot-v13r1').sourceSets.main.output) { exclude 'plugin.yml' }
+	from(project(':merchants-spigot-v14r1').sourceSets.main.output) { exclude 'plugin.yml' }
+	from(project(':merchants-spigot-v15r3').sourceSets.main.output) { exclude 'plugin.yml' }
+	from(project(':merchants-spigot-v16r3').sourceSets.main.output) { exclude 'plugin.yml' }
+	from(project(':merchants-spigot-v17r4').sourceSets.main.output) { exclude 'plugin.yml' }
+	from(project(':merchants-spigot-v18r1').sourceSets.main.output) { exclude 'plugin.yml' }
+	from(project(':merchants-spigot-v18r2').sourceSets.main.output) { exclude 'plugin.yml' }
+
+	// Exclude the other plugin mains
+	exclude 'me/cybermaxke/merchants/v**/SMerchantPlugin**'
 
 	// Classifier
 	classifier = 'release'
@@ -41,7 +60,7 @@ jar {
 }
 
 processResources {
-	ext.set('mainclass', 'me.cybermaxke.merchants.v13r1.SMerchantPlugin')
+	ext.set('mainclass', 'me.cybermaxke.merchants.SMerchantPlugin')
 
 	// This will ensure that this task is redone when the versions change.
 	inputs.property "name", project.theName
