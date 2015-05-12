@@ -31,7 +31,6 @@ import java.util.Set;
 import org.bukkit.craftbukkit.v1_8_R2.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_8_R2.event.CraftEventFactory;
 import org.bukkit.craftbukkit.v1_8_R2.util.CraftChatMessage;
-
 import org.bukkit.entity.Player;
 
 import com.google.common.collect.Lists;
@@ -76,8 +75,7 @@ public class SMerchant implements IMerchant, Merchant {
 	protected EntityPlayer onTradePlayer;
 
 	public SMerchant(String title, boolean jsonTitle) {
-		this.jsonTitle = jsonTitle;
-		this.title = title;
+		this.setTitle(title, jsonTitle);
 	}
 
 	@Override
@@ -92,7 +90,7 @@ public class SMerchant implements IMerchant, Merchant {
 		
 	@Override
 	public void setTitle(String title, boolean jsonTitle) {
-		checkNotNull(title, "The title cannot be null!");
+		checkNotNull(title, "title");
 		
 		// The old title
 		IChatBaseComponent oldTitle = this.sendTitle;
@@ -102,7 +100,7 @@ public class SMerchant implements IMerchant, Merchant {
 			try {
 				newTitle = ChatSerializer.a(this.title);
 			} catch (Exception e) {
-				throw new IllegalArgumentException("Invalid json format!", e);
+				throw new IllegalArgumentException("invalid json format (" + title + ")", e);
 			}
 		} else {
 			newTitle = CraftChatMessage.fromString(this.title)[0];
@@ -125,13 +123,13 @@ public class SMerchant implements IMerchant, Merchant {
 
 	@Override
 	public boolean addListener(MerchantTradeListener listener) {
-		checkNotNull(listener, "The listener cannot be null!");
+		checkNotNull(listener, "listener");
 		return this.handlers.add(listener);
 	}
 
 	@Override
 	public boolean removeListener(MerchantTradeListener listener) {
-		checkNotNull(listener, "The listener cannot be null!");
+		checkNotNull(listener, "listener");
 		return this.handlers.remove(listener);
 	}
 
@@ -141,8 +139,48 @@ public class SMerchant implements IMerchant, Merchant {
 	}
 
 	@Override
+	public int getOffersCount() {
+		return this.offers.size();
+	}
+
+	@Override
+	public MerchantOffer getOfferAt(int index) {
+		if (index < 0 || index >= this.offers.size()) {
+			throw new IndexOutOfBoundsException("index (" + index + ") out of bounds min (0) and max (" + this.offers.size() + ")");
+		}
+
+		return (MerchantOffer) this.offers.get(index);
+	}
+
+	@Override
+	public void setOfferAt(int index, MerchantOffer offer) {
+		checkNotNull(offer, "offer");
+
+		if (index < 0 || index >= this.offers.size()) {
+			throw new IndexOutOfBoundsException("index (" + index + ") out of bounds min (0) and max (" + this.offers.size() + ")");
+		}
+
+		SMerchantOffer old = (SMerchantOffer) this.offers.set(index, (MerchantRecipe) offer);
+		old.remove(this);
+
+		// Send the new offer list
+		this.sendUpdate();
+	}
+
+	@Override
+	public void insetOfferAt(int index, MerchantOffer offer) {
+		checkNotNull(offer, "offer");
+
+		if (index < 0 || index >= this.offers.size()) {
+			throw new IndexOutOfBoundsException("index (" + index + ") out of bounds min (0) and max (" + this.offers.size() + ")");
+		}
+
+		this.offers.add(index, (MerchantRecipe) offer);
+	}
+
+	@Override
 	public void removeOffer(MerchantOffer offer) {
-		checkNotNull(offer, "The offer cannot be null!");
+		checkNotNull(offer, "offer");
 
 		if (this.offers.remove(offer)) {
 			// Unlink the offer
@@ -155,7 +193,7 @@ public class SMerchant implements IMerchant, Merchant {
 
 	@Override
 	public void removeOffers(Iterable<MerchantOffer> offers) {
-		checkNotNull(offers, "The offers cannot be null!");
+		checkNotNull(offers, "offers");
 
 		// Only update if necessary
 		if (offers.iterator().hasNext()) {
@@ -175,7 +213,7 @@ public class SMerchant implements IMerchant, Merchant {
 
 	@Override
 	public void addOffer(MerchantOffer offer) {
-		checkNotNull(offer, "The offer cannot be null!");
+		checkNotNull(offer, "offer");
 
 		if (this.offers.contains(offer)) {
 			return;
@@ -193,7 +231,7 @@ public class SMerchant implements IMerchant, Merchant {
 
 	@Override
 	public void addOffers(Iterable<MerchantOffer> offers) {
-		checkNotNull(offers, "The offers cannot be null!");
+		checkNotNull(offers, "offers");
 		
 		// Only update if necessary
 		if (!offers.iterator().hasNext()) {
@@ -215,7 +253,7 @@ public class SMerchant implements IMerchant, Merchant {
 
 	@Override
 	public void sortOffers(final Comparator<MerchantOffer> comparator) {
-		checkNotNull(comparator, "The comparator cannot be null!");
+		checkNotNull(comparator, "comparator");
 
 		// Only sort if necessary
 		if (this.offers.size() <= 1) {
@@ -247,7 +285,7 @@ public class SMerchant implements IMerchant, Merchant {
 
 	@Override
 	public boolean addCustomer(Player player) {
-		checkNotNull(player, "The player cannot be null!");
+		checkNotNull(player, "player");
 
 		if (this.customers.add(player)) {
 			EntityPlayer player0 = ((CraftPlayer) player).getHandle();
@@ -290,7 +328,7 @@ public class SMerchant implements IMerchant, Merchant {
 
 	@Override
 	public boolean removeCustomer(Player player) {
-		checkNotNull(player, "The player cannot be null!");
+		checkNotNull(player, "player");
 
 		if (this.customers.remove(player)) {
 			player.closeInventory();
@@ -302,7 +340,7 @@ public class SMerchant implements IMerchant, Merchant {
 
 	@Override
 	public boolean hasCustomer(Player player) {
-		checkNotNull(player, "The player cannot be null!");
+		checkNotNull(player, "player");
 		return this.customers.contains(player);
 	}
 

@@ -25,8 +25,8 @@ import org.bukkit.inventory.ItemStack;
 public class Merchants {
 	private static MerchantAPI instance;
 	
-	private static final String ERROR_INSTANCE_MISSING = "The merchants api is not loaded!";
-	private static final String ERROR_SET_INSTANCE = "The merchants api can only be set once!";
+	private static final String ERROR_INSTANCE_MISSING = "merchants api is not loaded";
+	private static final String ERROR_SET_INSTANCE = "merchants api instance can only be set once";
 
 	/**
 	 * Creates a new merchant with the title.

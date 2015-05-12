@@ -27,4 +27,18 @@ public interface MerchantInventory extends org.bukkit.inventory.MerchantInventor
 	 */
 	Merchant getMerchant();
 
+	/**
+	 * Gets the index of the offer that is selected.
+	 * 
+	 * @return the index
+	 */
+	int getSelectedOfferIndex();
+
+	/**
+	 * Gets the offer that is selected.
+	 * 
+	 * @return the offer
+	 */
+	MerchantOffer getSelectedOffer();
+
 }

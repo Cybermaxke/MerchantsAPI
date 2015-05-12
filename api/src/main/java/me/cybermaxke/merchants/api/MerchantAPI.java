@@ -45,11 +45,11 @@ public interface MerchantAPI {
 	 * Creates a new merchant offer with the trade items.
 	 * 
 	 * @param result the resulting item stack
-	 * @param item1 the first item stack
-	 * @param item2 the second item stack
+	 * @param firstItem the first item stack
+	 * @param secondItem the second item stack
 	 * @return the merchant offer
 	 */
-	MerchantOffer newOffer(ItemStack result, ItemStack item1, @Nullable ItemStack item2);
+	MerchantOffer newOffer(ItemStack result, ItemStack firstItem, @Nullable ItemStack secondItem);
 
 	/**
 	 * Creates a new merchant offer with the trade items.

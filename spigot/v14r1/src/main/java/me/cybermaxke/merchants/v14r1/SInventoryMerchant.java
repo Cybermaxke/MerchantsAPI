@@ -27,6 +27,9 @@ import org.bukkit.entity.Player;
 public class SInventoryMerchant extends InventoryMerchant {
 	public final SMerchant merchant;
 
+	// The current index of the inventory.
+	public int currentIndex;
+
 	public SInventoryMerchant(EntityPlayer human, SMerchant merchant) {
 		super(human, merchant);
 		this.merchant = merchant;
@@ -36,4 +39,13 @@ public class SInventoryMerchant extends InventoryMerchant {
 	public boolean a_(EntityHuman human) {
 		return this.merchant.hasCustomer((Player) human.getBukkitEntity());
 	}
+
+	@Override
+	public void c(int i) {
+		super.c(i);
+
+		// Catch the current index
+		this.currentIndex = i;
+	}
+
 }

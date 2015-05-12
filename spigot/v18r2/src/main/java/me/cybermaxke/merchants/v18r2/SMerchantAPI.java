@@ -30,28 +30,28 @@ public class SMerchantAPI implements MerchantAPI {
 
 	@Override
 	public Merchant newMerchant(String title) {
-		checkNotNull(title, "The title cannot be null!");
+		checkNotNull(title, "title");
 		return new SMerchant(title, false);
 	}
 
 	@Override
 	public Merchant newMerchant(String title, boolean jsonTitle) {
-		checkNotNull(title, "The title cannot be null!");
+		checkNotNull(title, "title");
 		return new SMerchant(title, jsonTitle);
 	}
 
 	@Override
 	public MerchantOffer newOffer(ItemStack result, ItemStack item1, ItemStack item2) {
-		checkNotNull(result, "The result cannot be null!");
-		checkNotNull(item1, "The first item cannot be null!");
+		checkNotNull(result, "result");
+		checkNotNull(item1, "first item");
 
 		return new SMerchantOffer(result, item1, item2);
 	}
 
 	@Override
 	public MerchantOffer newOffer(ItemStack result, ItemStack item1) {
-		checkNotNull(result, "The result cannot be null!");
-		checkNotNull(item1, "The first item cannot be null!");
+		checkNotNull(result, "result");
+		checkNotNull(item1, "first item");
 
 		return new SMerchantOffer(result, item1, null);
 	}

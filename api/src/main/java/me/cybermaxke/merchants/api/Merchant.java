@@ -121,6 +121,37 @@ public interface Merchant {
 	List<MerchantOffer> getOffers();
 
 	/**
+	 * Gets the offer at the index.
+	 * 
+	 * @param index the index
+	 * @return the offer
+	 */
+	MerchantOffer getOfferAt(int index);
+
+	/**
+	 * Gets the amount of offers in this merchant.
+	 * 
+	 * @return the count
+	 */
+	int getOffersCount();
+
+	/**
+	 * Sets the offer at the index.
+	 * 
+	 * @param index the index
+	 * @param offer the offer
+	 */
+	void setOfferAt(int index, MerchantOffer offer);
+
+	/**
+	 * Inserts the offer at the index.
+	 * 
+	 * @param index the index
+	 * @param offer the offer
+	 */
+	void insetOfferAt(int index, MerchantOffer offer);
+
+	/**
 	 * Adds a customer to the merchant.
 	 * 
 	 * @param player the player

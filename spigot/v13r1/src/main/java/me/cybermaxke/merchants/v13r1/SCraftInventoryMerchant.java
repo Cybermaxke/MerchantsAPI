@@ -20,6 +20,7 @@ package me.cybermaxke.merchants.v13r1;
 
 import me.cybermaxke.merchants.api.Merchant;
 import me.cybermaxke.merchants.api.MerchantInventory;
+import me.cybermaxke.merchants.api.MerchantOffer;
 
 import org.bukkit.craftbukkit.inventory.CraftInventoryMerchant;
 
@@ -33,4 +34,15 @@ public class SCraftInventoryMerchant extends CraftInventoryMerchant implements M
 	public Merchant getMerchant() {
 		return ((SInventoryMerchant) this.inventory).merchant;
 	}
+
+	@Override
+	public int getSelectedOfferIndex() {
+		return ((SInventoryMerchant) this.inventory).currentIndex;
+	}
+
+	@Override
+	public MerchantOffer getSelectedOffer() {
+		return this.getMerchant().getOfferAt(this.getSelectedOfferIndex());
+	}
+
 }
