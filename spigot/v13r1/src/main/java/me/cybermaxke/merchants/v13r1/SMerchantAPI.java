@@ -25,6 +25,7 @@ import me.cybermaxke.merchants.api.MerchantOffer;
 import org.bukkit.inventory.ItemStack;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkArgument;
 
 public class SMerchantAPI implements MerchantAPI {
 
@@ -40,20 +41,20 @@ public class SMerchantAPI implements MerchantAPI {
 		return new SMerchant(title, jsonTitle);
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public MerchantOffer newOffer(ItemStack result, ItemStack item1, ItemStack item2) {
 		checkNotNull(result, "result");
+		checkArgument(result.getTypeId() != 0, "result may not be air");
 		checkNotNull(item1, "first item");
+		checkArgument(item1.getTypeId() != 0, "first item may not be air");
 
-		return new SMerchantOffer(result, item1, item2);
+		return new SMerchantOffer(result.clone(), item1.clone(), item2 == null || item2.getTypeId() == 0 ? null : item2.clone());
 	}
 
 	@Override
 	public MerchantOffer newOffer(ItemStack result, ItemStack item1) {
-		checkNotNull(result, "result");
-		checkNotNull(item1, "first item");
-
-		return new SMerchantOffer(result, item1, null);
+		return this.newOffer(result, item1, null);
 	}
 
 }

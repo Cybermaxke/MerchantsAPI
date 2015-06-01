@@ -64,7 +64,7 @@ public class SMerchantOffer extends MerchantRecipe implements MerchantOffer {
 
 	@Override
 	public org.bukkit.inventory.ItemStack getFirstItem() {
-		return this.item1;
+		return this.item1.clone();
 	}
 
 	@Override
@@ -78,7 +78,7 @@ public class SMerchantOffer extends MerchantRecipe implements MerchantOffer {
 
 	@Override
 	public org.bukkit.inventory.ItemStack getResultItem() {
-		return this.result;
+		return this.result.clone();
 	}
 
 	@Override

@@ -36,7 +36,7 @@ public class SMerchantPlugin extends JavaPlugin {
 			if (Bukkit.getVersion().contains("MC: 1.3.2")) {
 				version = "v13r1";
 			}
-			version = "none";
+			version = "unknown";
 		}
 		String clazzName = this.getClass().getPackage().getName() + "." + version + ".SMerchantPlugin";
 
