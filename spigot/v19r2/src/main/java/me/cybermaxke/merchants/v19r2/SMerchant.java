@@ -428,19 +428,19 @@ public class SMerchant implements IMerchant, Merchant {
 
 	@Override
 	public void a(ItemStack arg0) {
-		// TODO Auto-generated method stub
+		// Not used
 		
 	}
 
 	@Override
 	public EntityHuman getTrader() {
-		// TODO Auto-generated method stub
+		// Not used
 		return null;
 	}
 
 	@Override
 	public void setTradingPlayer(EntityHuman arg0) {
-		// TODO Auto-generated method stub
+		// Not used
 		
 	}
 }
