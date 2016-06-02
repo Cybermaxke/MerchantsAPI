@@ -365,24 +365,6 @@ public class SMerchant implements IMerchant, Merchant {
 		this.onTrade = (SMerchantOffer) recipe;
 	}
 
-	
-// Cannot compile these, therefor they are commented out in 1.9r2 and above
-//	@Override
-//	public void a_(EntityHuman arg0) {
-//		// Not used
-//	}
-//
-//	@Override
-//	public void a_(ItemStack arg0) {
-//		// Not used
-//	}
-//
-//	@Override
-//	public EntityHuman v_() {
-//		// Not used
-//		return null;
-//	}
-
 	protected void sendTitleUpdate() {
 		// Re-send the open window message to update the window name
 		Iterator<Player> it = this.customers.iterator();
