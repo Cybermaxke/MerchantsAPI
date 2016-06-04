@@ -38,7 +38,7 @@ public class SMerchantPlugin extends JavaPlugin {
 			}
 			version = "unknown";
 		}
-		String clazzName = this.getClass().getPackage().getName() + "." + version + ".SMerchantPlugin";
+		String clazzName = this.getClass().getPackage().getName() + "." + version + ".SMerchantAPI";
 
 		try {
 			Class<?> clazz = Class.forName(clazzName);
