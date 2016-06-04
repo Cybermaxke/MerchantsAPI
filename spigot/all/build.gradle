@@ -7,12 +7,6 @@ dependencies {
 	compile 'org.spigotmc:spigot:1.8.4'
 }
 
-// Dependencies
-dependencies {
-	compile 'org.spigotmc:spigot:1.8.3'
-}
-
-evaluationDependsOn(':merchants-api')
 evaluationDependsOn(':merchants-spigot-v13r1')
 evaluationDependsOn(':merchants-spigot-v14r1')
 evaluationDependsOn(':merchants-spigot-v15r3')
@@ -25,7 +19,6 @@ evaluationDependsOn(':merchants-spigot-v19r2')
 
 jar {
 	// Jar shading and packaging configuration
-	from(project(':merchants-api').sourceSets.main.output) {}
 	from(project(':merchants-spigot-v13r1').sourceSets.main.output) { exclude 'plugin.yml' }
 	from(project(':merchants-spigot-v14r1').sourceSets.main.output) { exclude 'plugin.yml' }
 	from(project(':merchants-spigot-v15r3').sourceSets.main.output) { exclude 'plugin.yml' }
