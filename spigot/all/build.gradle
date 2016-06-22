@@ -7,25 +7,15 @@ dependencies {
 	compile 'org.spigotmc:spigot:1.8.4'
 }
 
-evaluationDependsOn(':merchants-spigot-v13r1')
-evaluationDependsOn(':merchants-spigot-v14r1')
-evaluationDependsOn(':merchants-spigot-v15r3')
 evaluationDependsOn(':merchants-spigot-v16r3')
 evaluationDependsOn(':merchants-spigot-v17r4')
-evaluationDependsOn(':merchants-spigot-v18r1')
-evaluationDependsOn(':merchants-spigot-v18r2')
 evaluationDependsOn(':merchants-spigot-v18r3')
 evaluationDependsOn(':merchants-spigot-v19r2')
 
 jar {
 	// Jar shading and packaging configuration
-	from(project(':merchants-spigot-v13r1').sourceSets.main.output) { exclude 'plugin.yml' }
-	from(project(':merchants-spigot-v14r1').sourceSets.main.output) { exclude 'plugin.yml' }
-	from(project(':merchants-spigot-v15r3').sourceSets.main.output) { exclude 'plugin.yml' }
 	from(project(':merchants-spigot-v16r3').sourceSets.main.output) { exclude 'plugin.yml' }
 	from(project(':merchants-spigot-v17r4').sourceSets.main.output) { exclude 'plugin.yml' }
-	from(project(':merchants-spigot-v18r1').sourceSets.main.output) { exclude 'plugin.yml' }
-	from(project(':merchants-spigot-v18r2').sourceSets.main.output) { exclude 'plugin.yml' }
 	from(project(':merchants-spigot-v18r3').sourceSets.main.output) { exclude 'plugin.yml' }
 	from(project(':merchants-spigot-v19r2').sourceSets.main.output) { exclude 'plugin.yml' }
 

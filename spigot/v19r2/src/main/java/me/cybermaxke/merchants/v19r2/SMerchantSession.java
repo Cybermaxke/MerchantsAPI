@@ -16,17 +16,38 @@
  * You should have received a copy of the GNU General Public License
  * along with MerchantsAPI. If not, see <http://www.gnu.org/licenses/>.
  */
-package me.cybermaxke.merchants.v18r1;
+package me.cybermaxke.merchants.v19r2;
 
-import me.cybermaxke.merchants.api.Merchants;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 
-import org.bukkit.plugin.java.JavaPlugin;
+import me.cybermaxke.merchants.api.Merchant;
+import me.cybermaxke.merchants.api.MerchantSession;
 
-public class SMerchantPlugin extends JavaPlugin {
-
-	@Override
-	public void onEnable() {
-		Merchants.set(new SMerchantAPI());
+public class SMerchantSession implements MerchantSession {
+	
+	private final Merchant merchant;
+	private final Inventory inventory;
+	private final Player customer;
+	
+	public SMerchantSession(Merchant merchant, Inventory inventory, Player customer) {
+		this.inventory = inventory;
+		this.merchant = merchant;
+		this.customer = customer;
 	}
 
+	@Override
+	public Inventory getInventory() {
+		return this.inventory;
+	}
+
+	@Override
+	public Player getCustomer() {
+		return this.customer;
+	}
+
+	@Override
+	public Merchant getMerchant() {
+		return this.merchant;
+	}
 }

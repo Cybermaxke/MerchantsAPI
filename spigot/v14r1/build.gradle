@@ -1,8 +1,0 @@
-ext.mainClass = 'me.cybermaxke.merchants.v14r1.SMerchantPlugin'
-apply from: rootProject.file('gradle/build-plugin.gradle')
-archivesBaseName = 'merchants-spigot-v14r1'
-
-// Dependencies
-dependencies {
-	compile 'org.spigotmc:spigot:1.4.7'
-}

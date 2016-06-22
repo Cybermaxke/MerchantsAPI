@@ -1,9 +1,6 @@
 rootProject.name = theName
 
 include 'merchants-api'
-include 'merchants-spigot-v13r1'
-include 'merchants-spigot-v14r1'
-include 'merchants-spigot-v15r3'
 include 'merchants-spigot-v16r3'
 include 'merchants-spigot-v17r4'
 include 'merchants-spigot-v18r1'
@@ -13,13 +10,8 @@ include 'merchants-spigot-v19r2'
 include 'merchants-spigot-all'
 
 project(':merchants-api').projectDir = new File('api')
-project(':merchants-spigot-v13r1').projectDir = new File('spigot/v13r1')
-project(':merchants-spigot-v14r1').projectDir = new File('spigot/v14r1')
-project(':merchants-spigot-v15r3').projectDir = new File('spigot/v15r3')
 project(':merchants-spigot-v16r3').projectDir = new File('spigot/v16r3')
 project(':merchants-spigot-v17r4').projectDir = new File('spigot/v17r4')
-project(':merchants-spigot-v18r1').projectDir = new File('spigot/v18r1')
-project(':merchants-spigot-v18r2').projectDir = new File('spigot/v18r2')
 project(':merchants-spigot-v18r3').projectDir = new File('spigot/v18r3')
 project(':merchants-spigot-v19r2').projectDir = new File('spigot/v19r2')
 project(':merchants-spigot-all').projectDir = new File('spigot/all')

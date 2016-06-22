@@ -16,36 +16,38 @@
  * You should have received a copy of the GNU General Public License
  * along with MerchantsAPI. If not, see <http://www.gnu.org/licenses/>.
  */
-package me.cybermaxke.merchants.v18r1;
+package me.cybermaxke.merchants.v16r3;
 
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 
-import net.minecraft.server.v1_8_R1.EntityHuman;
-import net.minecraft.server.v1_8_R1.EntityPlayer;
-import net.minecraft.server.v1_8_R1.InventoryMerchant;
+import me.cybermaxke.merchants.api.Merchant;
+import me.cybermaxke.merchants.api.MerchantSession;
 
-public class SInventoryMerchant extends InventoryMerchant {
-	public final SMerchant merchant;
-
-	// The current index of the inventory.
-	public int currentIndex;
-
-	public SInventoryMerchant(EntityPlayer human, SMerchant merchant) {
-		super(human, merchant);
+public class SMerchantSession implements MerchantSession {
+	
+	private final Merchant merchant;
+	private final Inventory inventory;
+	private final Player customer;
+	
+	public SMerchantSession(Merchant merchant, Inventory inventory, Player customer) {
+		this.inventory = inventory;
 		this.merchant = merchant;
+		this.customer = customer;
 	}
 
 	@Override
-	public boolean a(EntityHuman human) {
-		return this.merchant.hasCustomer((Player) human.getBukkitEntity());
+	public Inventory getInventory() {
+		return this.inventory;
 	}
 
 	@Override
-	public void d(int i) {
-		super.d(i);
-
-		// Catch the current index
-		this.currentIndex = i;
+	public Player getCustomer() {
+		return this.customer;
 	}
 
+	@Override
+	public Merchant getMerchant() {
+		return this.merchant;
+	}
 }

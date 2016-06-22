@@ -53,7 +53,7 @@ public class SContainerMerchant extends ContainerMerchant {
 			}
 		}
 
-		SInventoryMerchant inventory = new SInventoryMerchant(customer, merchant);
+		final SInventoryMerchant inventory = new SInventoryMerchant(customer, merchant);
 
 		this.setSlot(0, new Slot(inventory, 0, 36, 53));
 		this.setSlot(1, new Slot(inventory, 1, 62, 53));
@@ -62,7 +62,10 @@ public class SContainerMerchant extends ContainerMerchant {
 		fieldInventoryMerchant.setAccessible(true);
 		fieldInventoryMerchant.set(this, inventory);
 
-		this.bukkitEntity = new CraftInventoryView(customer.getBukkitEntity(), new SCraftInventoryMerchant(inventory), this);
+		final SCraftInventoryMerchant craftInventory = new SCraftInventoryMerchant(inventory);
+		inventory.setCraftInventory(craftInventory);
+
+		this.bukkitEntity = new CraftInventoryView(customer.getBukkitEntity(), craftInventory, this);
 	}
 
 	/**

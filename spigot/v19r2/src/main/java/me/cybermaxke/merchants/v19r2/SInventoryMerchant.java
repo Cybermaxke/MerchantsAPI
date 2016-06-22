@@ -25,13 +25,17 @@ import net.minecraft.server.v1_9_R2.EntityPlayer;
 import net.minecraft.server.v1_9_R2.InventoryMerchant;
 
 public class SInventoryMerchant extends InventoryMerchant {
+
 	public final SMerchant merchant;
+	private final EntityPlayer customer;
+	private SMerchantSession session;
 
 	// The current index of the inventory.
 	public int currentIndex;
 
-	public SInventoryMerchant(EntityPlayer human, SMerchant merchant) {
-		super(human, merchant);
+	public SInventoryMerchant(EntityPlayer customer, SMerchant merchant) {
+		super(customer, merchant);
+		this.customer = customer;
 		this.merchant = merchant;
 	}
 
@@ -48,4 +52,15 @@ public class SInventoryMerchant extends InventoryMerchant {
 		this.currentIndex = i;
 	}
 
+	public void setCraftInventory(SCraftInventoryMerchant craftInventory) {
+		this.session = new SMerchantSession(this.merchant, craftInventory, this.customer.getBukkitEntity());
+	}
+	
+	@Override
+	public SMerchantSession getOwner() {
+		if (this.session == null) {
+			throw new IllegalStateException("The session is not initialized yet.");
+		}
+	    return this.session;
+	}
 }
