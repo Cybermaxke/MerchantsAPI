@@ -1,0 +1,56 @@
+apply from: rootProject.file('gradle/build-base.gradle')
+
+// Repositories
+repositories {
+	mavenCentral()
+	maven {
+		url 'http://repo.bukkit.org/content/groups/public/'
+	}
+	maven {
+		url 'https://dl.dropboxusercontent.com/u/56755498/repository/spigot/'
+	}
+}
+
+// Dependencies
+dependencies {
+	compile project(':merchants-api')
+}
+
+jar {
+	// Jar shading and packaging configuration
+	from { project(':merchants-api').sourceSets.main.output }
+}
+
+processResources {
+	// This will ensure that this task is redone when the versions change.
+	inputs.property "name", project.theName
+	inputs.property "version", project.version
+	inputs.property "identifier", project.theIdentifier
+	inputs.property "description", project.theDescription
+	inputs.property "projectpage", project.theProjectPage
+	inputs.property "authors", project.theAuthors
+	inputs.property "credits", project.theCredits
+	inputs.property "mainclass", project.mainClass
+
+	// Replace stuff in plugin.yml, nothing else
+	from(sourceSets.main.resources.srcDirs) {
+		include 'plugin.yml'
+
+		// Replace the properties
+		expand([
+			'name': project.theName,
+			'version': project.version,
+			'identifier': project.theIdentifier,
+			'description': project.theDescription,
+			'projectpage': project.theProjectPage,
+			'authors': project.theAuthors,
+			'credits': project.theCredits,
+			'mainclass': project.mainClass
+		])
+	}
+
+	// Copy everything else, thats not the plugin.yml
+	from(sourceSets.main.resources.srcDirs) {
+		exclude 'plugin.yml'
+	}
+}

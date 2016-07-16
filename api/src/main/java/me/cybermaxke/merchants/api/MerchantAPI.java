@@ -25,39 +25,39 @@ import org.bukkit.inventory.ItemStack;
 public interface MerchantAPI {
 
 	/**
-	 * Creates a new merchant with the title.
+	 * Creates a new {@link Merchant} with the specified title.
 	 * 
-	 * @param title the title
-	 * @return the merchant
+	 * @param title The title
+	 * @return The merchant
 	 */
 	Merchant newMerchant(String title);
-	
+
 	/**
-	 * Creates a new merchant with the title.
+	 * Creates a new {@link Merchant} with the specified title.
 	 * 
-	 * @param title the title
-	 * @param jsonTitle title in json format
-	 * @return the merchant
+	 * @param title The title
+	 * @param jsonTitle Title in json format
+	 * @return The merchant
 	 */
 	Merchant newMerchant(String title, boolean jsonTitle);
 
 	/**
-	 * Creates a new merchant offer with the trade items.
+	 * Creates a new {@link MerchantOffer} with the trade items.
 	 * 
-	 * @param result the resulting item stack
-	 * @param firstItem the first item stack
-	 * @param secondItem the second item stack
-	 * @return the merchant offer
+	 * @param result The resulting item stack
+	 * @param firstItem The first item stack
+	 * @param secondItem The second item stack
+	 * @return The merchant offer
 	 */
 	MerchantOffer newOffer(ItemStack result, ItemStack firstItem, @Nullable ItemStack secondItem);
 
 	/**
-	 * Creates a new merchant offer with the trade items.
+	 * Creates a new {@link MerchantOffer} with the trade items.
 	 * 
-	 * @param result the resulting item stack
-	 * @param item1 the first item stack
-	 * @return the merchant offer
+	 * @param result The resulting item stack
+	 * @param firstItem The first item stack
+	 * @return The merchant offer
 	 */
-	MerchantOffer newOffer(ItemStack result, ItemStack item1);
+	MerchantOffer newOffer(ItemStack result, ItemStack firstItem);
 
 }

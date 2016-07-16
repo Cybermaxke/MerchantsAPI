@@ -1,0 +1,46 @@
+// Apply plugin
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+
+// Minimum version of Java required
+sourceCompatibility = '1.6'
+targetCompatibility = '1.6'
+
+// Basic project information
+group = 'cybermaxke'
+version = '1.4.0-SNAPSHOT'
+
+// Repositories
+repositories {
+	mavenCentral()
+	maven {
+		url 'http://repo.bukkit.org/content/groups/public/'
+	}
+}
+
+// Project dependencies
+dependencies {
+	compile 'org.bukkit:bukkit:1.7.9-R0.2'
+}
+
+jar {
+	// Classifier
+	classifier = 'release'	
+	// Exclude empty directories
+	includeEmptyDirs = false
+}
+
+build.doLast {
+	tasks.cleanBuild.execute()
+	tasks.copyBuild.execute()
+}
+
+task cleanBuild(type: Delete) {
+	delete rootProject.file('build/' + project.archivesBaseName + '-' + project.version + '-release.jar')
+}
+
+task copyBuild(type: Copy) {
+	from 'build/libs/' + project.archivesBaseName + '-' + project.version + '-release.jar'
+	into rootProject.file('build')
+}

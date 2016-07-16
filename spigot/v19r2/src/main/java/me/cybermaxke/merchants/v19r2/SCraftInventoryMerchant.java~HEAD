@@ -16,36 +16,33 @@
  * You should have received a copy of the GNU General Public License
  * along with MerchantsAPI. If not, see <http://www.gnu.org/licenses/>.
  */
-package me.cybermaxke.merchants.v18r1;
+package me.cybermaxke.merchants.v19r2;
 
-import org.bukkit.entity.Player;
+import org.bukkit.craftbukkit.v1_9_R2.inventory.CraftInventoryMerchant;
 
-import net.minecraft.server.v1_8_R1.EntityHuman;
-import net.minecraft.server.v1_8_R1.EntityPlayer;
-import net.minecraft.server.v1_8_R1.InventoryMerchant;
+import me.cybermaxke.merchants.api.Merchant;
+import me.cybermaxke.merchants.api.MerchantInventory;
+import me.cybermaxke.merchants.api.MerchantOffer;
 
-public class SInventoryMerchant extends InventoryMerchant {
-	public final SMerchant merchant;
+public class SCraftInventoryMerchant extends CraftInventoryMerchant implements MerchantInventory {
 
-	// The current index of the inventory.
-	public int currentIndex;
-
-	public SInventoryMerchant(EntityPlayer human, SMerchant merchant) {
-		super(human, merchant);
-		this.merchant = merchant;
+	public SCraftInventoryMerchant(SInventoryMerchant merchant) {
+		super(merchant);
 	}
 
 	@Override
-	public boolean a(EntityHuman human) {
-		return this.merchant.hasCustomer((Player) human.getBukkitEntity());
+	public Merchant getMerchant() {
+		return ((SInventoryMerchant) this.inventory).merchant;
 	}
 
 	@Override
-	public void d(int i) {
-		super.d(i);
+	public int getSelectedOfferIndex() {
+		return ((SInventoryMerchant) this.inventory).currentIndex;
+	}
 
-		// Catch the current index
-		this.currentIndex = i;
+	@Override
+	public MerchantOffer getSelectedOffer() {
+		return this.getMerchant().getOfferAt(this.getSelectedOfferIndex());
 	}
 
 }

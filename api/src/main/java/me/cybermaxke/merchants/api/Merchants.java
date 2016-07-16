@@ -27,71 +27,63 @@ public class Merchants {
 	
 	private static final String ERROR_INSTANCE_MISSING = "merchants api is not loaded";
 	private static final String ERROR_SET_INSTANCE = "merchants api instance can only be set once";
-
-	/**
-	 * Creates a new merchant with the title.
-	 * 
-	 * @param title the title
-	 * @return the merchant
-	 */
-	public static Merchant newMerchant(String title) {
+	
+	private static MerchantAPI getOrThrowError() {
 		if (instance == null) {
 			throw new IllegalStateException(ERROR_INSTANCE_MISSING);
 		}
-		
-		return instance.newMerchant(title);
+		return instance;
+	}
+
+	/**
+	 * Creates a new {@link Merchant} with the specified title.
+	 * 
+	 * @param title The title
+	 * @return The merchant
+	 */
+	public static Merchant newMerchant(String title) {
+		return getOrThrowError().newMerchant(title);
 	}
 	
 	/**
-	 * Creates a new merchant with the title.
+	 * Creates a new {@link Merchant} with the specified title.
 	 * 
-	 * @param title the title
-	 * @param jsonTitle title in json format
-	 * @return the merchant
+	 * @param title The title
+	 * @param jsonTitle Whether the title is in json format
+	 * @return The merchant
 	 */
 	public static Merchant newMerchant(String title, boolean jsonTitle) {
-		if (instance == null) {
-			throw new IllegalStateException(ERROR_INSTANCE_MISSING);
-		}
-		
-		return instance.newMerchant(title, jsonTitle);
+		return getOrThrowError().newMerchant(title, jsonTitle);
 	}
 
 	/**
-	 * Creates a new merchant offer with the trade items.
+	 * Creates a new {@link MerchantOffer} with the trade items.
 	 * 
-	 * @param result the resulting item stack
-	 * @param item1 the first item stack
-	 * @param item2 the second item stack
-	 * @return the merchant offer
+	 * @param result The resulting item stack
+	 * @param firstItem The first item stack
+	 * @param secondItem The second item stack
+	 * @return The merchant offer
 	 */
-	public static MerchantOffer newOffer(ItemStack result, ItemStack item1, @Nullable ItemStack item2) {
-		if (instance == null) {
-			throw new IllegalStateException(ERROR_INSTANCE_MISSING);
-		}
-		
-		return instance.newOffer(result, item1, item2);
+	public static MerchantOffer newOffer(ItemStack result, ItemStack firstItem,
+			@Nullable ItemStack secondItem) {
+		return getOrThrowError().newOffer(result, firstItem, secondItem);
 	}
 
 	/**
-	 * Creates a new merchant offer with the trade items.
+	 * Creates a new {@link MerchantOffer} with the trade items.
 	 * 
-	 * @param result the resulting item stack
-	 * @param item1 the first item stack
-	 * @return the merchant offer
+	 * @param result The resulting item stack
+	 * @param firstItem The first item stack
+	 * @return The merchant offer
 	 */
-	public static MerchantOffer newOffer(ItemStack result, ItemStack item1) {
-		if (instance == null) {
-			throw new IllegalStateException(ERROR_INSTANCE_MISSING);
-		}
-		
-		return instance.newOffer(result, item1);
+	public static MerchantOffer newOffer(ItemStack result, ItemStack firstItem) {
+		return getOrThrowError().newOffer(result, firstItem);
 	}
 	
 	/**
 	 * Gets the instance of the merchants api.
 	 * 
-	 * @return the instance
+	 * @return The instance
 	 */
 	public static MerchantAPI get() {
 		return instance;
@@ -100,13 +92,12 @@ public class Merchants {
 	/**
 	 * Sets the instance of the merchants api.
 	 * 
-	 * @param api the instance
+	 * @param api The instance
 	 */
 	public static void set(MerchantAPI api) {
 		if (instance != null) {
 			throw new IllegalStateException(ERROR_SET_INSTANCE);
 		}
-
 		instance = api;
 	}
 }
