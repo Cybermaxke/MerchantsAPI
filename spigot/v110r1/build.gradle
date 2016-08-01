@@ -4,5 +4,5 @@ archivesBaseName = 'merchants-spigot-v110r1'
 
 // Dependencies
 dependencies {
-	compile 'org.spigotmc:spigot:1.10.2'
+	compile 'org.spigotmc:spigot:1.10'
 }

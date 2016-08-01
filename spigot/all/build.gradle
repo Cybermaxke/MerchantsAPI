@@ -11,6 +11,7 @@ evaluationDependsOn(':merchants-spigot-v16r3')
 evaluationDependsOn(':merchants-spigot-v17r4')
 evaluationDependsOn(':merchants-spigot-v18r3')
 evaluationDependsOn(':merchants-spigot-v19r2')
+evaluationDependsOn(':merchants-spigot-v110r1')
 
 jar {
 	// Jar shading and packaging configuration
@@ -18,6 +19,7 @@ jar {
 	from(project(':merchants-spigot-v17r4').sourceSets.main.output) { exclude 'plugin.yml' }
 	from(project(':merchants-spigot-v18r3').sourceSets.main.output) { exclude 'plugin.yml' }
 	from(project(':merchants-spigot-v19r2').sourceSets.main.output) { exclude 'plugin.yml' }
+	from(project(':merchants-spigot-v110r1').sourceSets.main.output) { exclude 'plugin.yml' }
 
 	// Exclude the other plugin mains
 	exclude 'me/cybermaxke/merchants/v**/SMerchantPlugin**'
