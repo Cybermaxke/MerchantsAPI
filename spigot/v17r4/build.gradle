@@ -1,8 +1,6 @@
-ext.mainClass = 'me.cybermaxke.merchants.v17r4.SMerchantPlugin'
-apply from: rootProject.file('gradle/build-plugin.gradle')
-archivesBaseName = 'merchants-spigot-v17r4'
+plugins { id "com.github.hierynomus.license" version "0.13.1" }
 
-// Dependencies
-dependencies {
-	compile 'org.spigotmc:spigot:1.7.10'
-}
+ext.mainClass = 'me.cybermaxke.merchants.v17r4.SMerchantPlugin'
+ext.spigotVersion = '1.7.10'
+
+apply from: rootProject.file('gradle/build-plugin.gradle')

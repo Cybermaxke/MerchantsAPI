@@ -1,0 +1,13 @@
+build.doLast {
+    tasks.cleanBuild.execute()
+    tasks.copyBuild.execute()
+}
+
+task cleanBuild(type: Delete) {
+    delete rootProject.file("build/${project.archivesBaseName}-${project.version}-release.jar")
+}
+
+task copyBuild(type: Copy) {
+    from "build/libs/${project.archivesBaseName}-${project.version}-release.jar"
+    into rootProject.file('build')
+}

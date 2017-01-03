@@ -1,7 +1,7 @@
+plugins { id "com.github.hierynomus.license" version "0.13.1" }
+
 apply from: rootProject.file('gradle/build-base.gradle')
+
 archivesBaseName = 'merchants-api'
 
-// Project dependencies
-dependencies {
-	compile 'org.bukkit:bukkit:1.7.9-R0.2'
-}
+apply from: rootProject.file('gradle/build-copy.gradle')

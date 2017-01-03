@@ -1,18 +1,18 @@
-/**
+/*
  * This file is part of MerchantsAPI.
- * 
- * Copyright (c) 2014, Cybermaxke
- * 
+ *
+ * Copyright (c) Cybermaxke
+ *
  * MerchantsAPI is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * MerchantsAPI is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with MerchantsAPI. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -28,232 +28,235 @@ import org.bukkit.craftbukkit.v1_7_R4.inventory.CraftItemStack;
 
 import net.minecraft.server.v1_7_R4.ItemStack;
 import net.minecraft.server.v1_7_R4.MerchantRecipe;
+
 import me.cybermaxke.merchants.api.MerchantOffer;
 
 import com.google.common.base.Optional;
 
 public class SMerchantOffer extends MerchantRecipe implements MerchantOffer {
-	private static Field fieldUses;
-	private static Field fieldMaxUses;
 
-	// Whether they are changed by spigot from private to public
-	private static boolean publicFields;
+    private static Field fieldUses;
+    private static Field fieldMaxUses;
 
-	// The merchants this offer is added to
-	private final Set<SMerchant> merchants = Collections.newSetFromMap(new WeakHashMap<SMerchant, Boolean>());
+    // Whether they are changed by spigot from private to public
+    private static boolean publicFields;
 
-	private final org.bukkit.inventory.ItemStack item1;
-	private final org.bukkit.inventory.ItemStack item2;
-	private final org.bukkit.inventory.ItemStack result;
+    // The merchants this offer is added to
+    private final Set<SMerchant> merchants = Collections.newSetFromMap(new WeakHashMap<SMerchant, Boolean>());
 
-	private int maxUses0 = -1;
-	private int uses0;
+    private final org.bukkit.inventory.ItemStack item1;
+    private final org.bukkit.inventory.ItemStack item2;
+    private final org.bukkit.inventory.ItemStack result;
 
-	private boolean maxUsesChange;
-	private boolean usesChange;
+    private int maxUses0 = -1;
+    private int uses0;
 
-	public SMerchantOffer(org.bukkit.inventory.ItemStack result, org.bukkit.inventory.ItemStack item1, org.bukkit.inventory.ItemStack item2) {
-		super(null, null, null);
+    private boolean maxUsesChange;
+    private boolean usesChange;
 
-		this.result = result;
-		this.item1 = item1;
-		this.item2 = item2;
-	}
+    SMerchantOffer(org.bukkit.inventory.ItemStack result, org.bukkit.inventory.ItemStack item1, org.bukkit.inventory.ItemStack item2) {
+        super(null, null, null);
 
-	// Links the offer to the merchant.
-	protected void add(SMerchant merchant) {
-		this.merchants.add(merchant);
-	}
+        this.result = result;
+        this.item1 = item1;
+        this.item2 = item2;
+    }
 
-	// Unlinks the offer from the merchant.
-	protected void remove(SMerchant merchant) {
-		this.merchants.remove(merchant);
-	}
+    // Links the offer to the merchant.
+    void add(SMerchant merchant) {
+        this.merchants.add(merchant);
+    }
 
-	// Copies the uses from this class to the underlying fields
-	protected void copyUses() {
-		if (fieldUses == null) {
-			try {
-				fieldUses = MerchantRecipe.class.getDeclaredField("uses");
-				fieldMaxUses = MerchantRecipe.class.getDeclaredField("maxUses");
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+    // Unlinks the offer from the merchant.
+    void remove(SMerchant merchant) {
+        this.merchants.remove(merchant);
+    }
 
-			publicFields = Modifier.isPublic(fieldUses.getModifiers());
-		}
+    // Copies the uses from this class to the underlying fields
+    void copyUses() {
+        if (fieldUses == null) {
+            try {
+                fieldUses = MerchantRecipe.class.getDeclaredField("uses");
+                fieldMaxUses = MerchantRecipe.class.getDeclaredField("maxUses");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
-		try {
-			if (this.usesChange) {
-				if (!publicFields) {
-					fieldUses.setAccessible(true);
-				}
-				fieldUses.set(this, this.uses0);
-			}
-			if (this.maxUsesChange) {
-				if (!publicFields) {
-					fieldMaxUses.setAccessible(true);
-				}
-				fieldMaxUses.set(this, this.maxUses0 < 0 ? Integer.MAX_VALUE : this.maxUses0);
-			}
-			this.usesChange = false;
-			this.maxUsesChange = false;
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+            publicFields = Modifier.isPublic(fieldUses.getModifiers());
+        }
 
-	@Override
-	public org.bukkit.inventory.ItemStack getFirstItem() {
-		return this.item1.clone();
-	}
+        try {
+            if (this.usesChange) {
+                if (!publicFields) {
+                    fieldUses.setAccessible(true);
+                }
+                fieldUses.set(this, this.uses0);
+            }
+            if (this.maxUsesChange) {
+                if (!publicFields) {
+                    fieldMaxUses.setAccessible(true);
+                }
+                fieldMaxUses.set(this, this.maxUses0 < 0 ? Integer.MAX_VALUE : this.maxUses0);
+            }
+            this.usesChange = false;
+            this.maxUsesChange = false;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
-	@Override
-	public Optional<org.bukkit.inventory.ItemStack> getSecondItem() {
-		if (this.item2 == null) {
-			return Optional.absent();
-		}
+    @Override
+    public org.bukkit.inventory.ItemStack getFirstItem() {
+        return this.item1.clone();
+    }
 
-		return Optional.of(this.item2.clone());
-	}
+    @Override
+    public Optional<org.bukkit.inventory.ItemStack> getSecondItem() {
+        if (this.item2 == null) {
+            return Optional.absent();
+        }
 
-	@Override
-	public org.bukkit.inventory.ItemStack getResultItem() {
-		return this.result.clone();
-	}
+        return Optional.of(this.item2.clone());
+    }
 
-	@Override
-	public int getMaxUses() {
-		return this.maxUses0;
-	}
+    @Override
+    public org.bukkit.inventory.ItemStack getResultItem() {
+        return this.result.clone();
+    }
 
-	@Override
-	public void setMaxUses(int uses) {
-		if (uses == this.maxUses0) {
-			return;
-		}
+    @Override
+    public int getMaxUses() {
+        return this.maxUses0;
+    }
 
-		// Track the change
-		this.maxUsesChange = true;
-		// Get the state before
-		boolean locked0 = this.isLocked();
-		// Set the max uses
-		this.maxUses0 = uses;
-		// Get the state after
-		boolean locked1 = this.isLocked();
+    @Override
+    public void setMaxUses(int uses) {
+        if (uses == this.maxUses0) {
+            return;
+        }
 
-		// Send the new offer list
-		if (locked0 != locked1) {
-			for (SMerchant merchant : this.merchants) {
-				merchant.sendUpdate();
-			}
-		}
-	}
+        // Track the change
+        this.maxUsesChange = true;
+        // Get the state before
+        boolean locked0 = this.isLocked();
+        // Set the max uses
+        this.maxUses0 = uses;
+        // Get the state after
+        boolean locked1 = this.isLocked();
 
-	@Override
-	public void addMaxUses(int extra) {
-		if (this.maxUses0 >= 0) {
-			this.setMaxUses(this.maxUses0 + extra);
-		}
-	}
+        // Send the new offer list
+        if (locked0 != locked1) {
+            for (SMerchant merchant : this.merchants) {
+                merchant.sendUpdate();
+            }
+        }
+    }
 
-	@Override
-	public int getUses() {
-		return this.uses0;
-	}
+    @Override
+    public void addMaxUses(int extra) {
+        if (this.maxUses0 >= 0) {
+            this.setMaxUses(this.maxUses0 + extra);
+        }
+    }
 
-	@Override
-	public void setUses(int uses) {
-		if (this.uses0 == uses) {
-			return;
-		}
+    @Override
+    public int getUses() {
+        return this.uses0;
+    }
 
-		// Track the change
-		this.usesChange = true;
-		// Get the state before
-		boolean locked0 = this.isLocked();
-		// Add the uses
-		this.uses0 = uses;
-		// Get the state after
-		boolean locked1 = this.isLocked();
+    @Override
+    public void setUses(int uses) {
+        if (this.uses0 == uses) {
+            return;
+        }
 
-		// Send the new offer list
-		if (locked0 != locked1) {
-			for (SMerchant merchant : this.merchants) {
-				merchant.sendUpdate();
-			}
-		}
-	}
+        // Track the change
+        this.usesChange = true;
+        // Get the state before
+        boolean locked0 = isLocked();
+        // Add the uses
+        this.uses0 = uses;
+        // Get the state after
+        boolean locked1 = isLocked();
 
-	@Override
-	public void addUses(int uses) {
-		if (uses != 0) {
-			this.setUses(this.uses0 + uses);
-		}
-	}
+        // Send the new offer list
+        if (locked0 != locked1) {
+            for (SMerchant merchant : this.merchants) {
+                merchant.sendUpdate();
+            }
+        }
+    }
 
-	@Override
-	public boolean isLocked() {
-		return this.maxUses0 >= 0 && this.uses0 >= this.maxUses0;
-	}
+    @Override
+    public void addUses(int uses) {
+        if (uses != 0) {
+            setUses(this.uses0 + uses);
+        }
+    }
 
-	@Override
-	public ItemStack getBuyItem1() {
-		return convertSafely(this.item1);
-	}
+    @Override
+    public boolean isLocked() {
+        return this.maxUses0 >= 0 && this.uses0 >= this.maxUses0;
+    }
 
-	@Override
-	public ItemStack getBuyItem2() {
-		if (this.item2 == null) {
-			return null;
-		}
+    @Override
+    public ItemStack getBuyItem1() {
+        return convertSafely(this.item1);
+    }
 
-		return convertSafely(this.item2);
-	}
+    @Override
+    public ItemStack getBuyItem2() {
+        if (this.item2 == null) {
+            return null;
+        }
 
-	@Override
-	public boolean hasSecondItem() {
-		return this.item2 != null;
-	}
+        return convertSafely(this.item2);
+    }
 
-	@Override
-	public ItemStack getBuyItem3() {
-		return convertSafely(this.result);
-	}
+    @Override
+    public boolean hasSecondItem() {
+        return this.item2 != null;
+    }
 
-	@Override
-	public void f() {
-		this.addUses(1);
-	}
+    @Override
+    public ItemStack getBuyItem3() {
+        return convertSafely(this.result);
+    }
 
-	@Override
-	public void a(int extra) {
-		this.addMaxUses(extra);
-	}
+    @Override
+    public void f() {
+        addUses(1);
+    }
 
-	@Override
-	public boolean g() {
-		return this.isLocked();
-	}
+    @Override
+    public void a(int extra) {
+        addMaxUses(extra);
+    }
 
-	@Override
-	public SMerchantOffer clone() {
-		org.bukkit.inventory.ItemStack result = this.result.clone();
-		org.bukkit.inventory.ItemStack item1 = this.item1.clone();
-		org.bukkit.inventory.ItemStack item2 = this.item2 != null ? this.item2.clone() : null;
+    @Override
+    public boolean g() {
+        return isLocked();
+    }
 
-		SMerchantOffer clone = new SMerchantOffer(result, item1, item2);
-		clone.maxUses0 = this.maxUses0;
-		clone.uses0 = this.uses0;
+    @SuppressWarnings("CloneDoesntCallSuperClone")
+    @Override
+    public SMerchantOffer clone() {
+        final org.bukkit.inventory.ItemStack result = this.result.clone();
+        final org.bukkit.inventory.ItemStack item1 = this.item1.clone();
+        final org.bukkit.inventory.ItemStack item2 = this.item2 != null ? this.item2.clone() : null;
 
-		return clone;
-	}
+        final SMerchantOffer clone = new SMerchantOffer(result, item1, item2);
+        clone.maxUses0 = this.maxUses0;
+        clone.uses0 = this.uses0;
 
-	@SuppressWarnings("deprecation")
-	private static ItemStack convertSafely(org.bukkit.inventory.ItemStack itemStack) {
-		if (itemStack == null || itemStack.getTypeId() == 0 || itemStack.getAmount() == 0) {
-			return null;
-		}
-		return CraftItemStack.asNMSCopy(itemStack);
-	}
+        return clone;
+    }
+
+    @SuppressWarnings("deprecation")
+    private static ItemStack convertSafely(org.bukkit.inventory.ItemStack itemStack) {
+        if (itemStack == null || itemStack.getTypeId() == 0 || itemStack.getAmount() == 0) {
+            return null;
+        }
+        return CraftItemStack.asNMSCopy(itemStack);
+    }
 }

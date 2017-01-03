@@ -1,6 +1,6 @@
 This file is part of MerchantsAPI.
 
-Copyright (c) 2014, Cybermaxke
+Copyright (c) Cybermaxke
 
 MerchantsAPI is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by

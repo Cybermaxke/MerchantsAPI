@@ -2,6 +2,7 @@
 apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'idea'
+apply plugin: 'com.github.hierynomus.license'
 
 // Minimum version of Java required
 sourceCompatibility = '1.6'
@@ -9,38 +10,47 @@ targetCompatibility = '1.6'
 
 // Basic project information
 group = 'cybermaxke'
-version = '1.4.0-SNAPSHOT'
+version = '1.5.0-SNAPSHOT'
 
 // Repositories
 repositories {
-	mavenCentral()
+    mavenCentral()
+    maven {
+        url 'https://oss.sonatype.org/content/groups/public/'
+    }
+    maven {
+        url 'https://dl.dropboxusercontent.com/u/56755498/repository/spigot/'
+    }
+    // The spigot repo is causing trouble...
+    /*
 	maven {
-		url 'http://repo.bukkit.org/content/groups/public/'
+		url 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/'
 	}
+	*/
+}
+
+license {
+    header rootProject.file('HEADER.txt')
+    sourceSets = project.sourceSets
+    include '**/*.java'
+
+    strictCheck true
+    ignoreFailures = false
+
+    mapping {
+        java = 'SLASHSTAR_STYLE'
+    }
 }
 
 // Project dependencies
 dependencies {
-	compile 'org.bukkit:bukkit:1.7.9-R0.2'
+    compile 'org.spigotmc:spigot-api:1.8-R0.1'
+    compile 'com.google.code.findbugs:jsr305:1.3.9'
 }
 
 jar {
-	// Classifier
-	classifier = 'release'	
-	// Exclude empty directories
-	includeEmptyDirs = false
-}
-
-build.doLast {
-	tasks.cleanBuild.execute()
-	tasks.copyBuild.execute()
-}
-
-task cleanBuild(type: Delete) {
-	delete rootProject.file('build/' + project.archivesBaseName + '-' + project.version + '-release.jar')
-}
-
-task copyBuild(type: Copy) {
-	from 'build/libs/' + project.archivesBaseName + '-' + project.version + '-release.jar'
-	into rootProject.file('build')
+    // Classifier
+    classifier = 'release'
+    // Exclude empty directories
+    includeEmptyDirs = false
 }
