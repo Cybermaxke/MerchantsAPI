@@ -22,13 +22,13 @@ import org.bukkit.entity.Player;
 
 public interface MerchantTradeListener {
 
-	/**
-	 * Called when a customer trades an item with the {@link Merchant}.
-	 * 
-	 * @param merchant The merchant
-	 * @param offer The offer
-	 * @param customer The customer
-	 */
-	void onTrade(Merchant merchant, MerchantOffer offer, Player customer);
+    /**
+     * Called when a customer trades an item with the {@link Merchant}.
+     *
+     * @param merchant The merchant
+     * @param offer The offer
+     * @param customer The customer
+     */
+    void onTrade(Merchant merchant, MerchantOffer offer, Player customer);
 
 }

@@ -19,33 +19,33 @@
 package me.cybermaxke.merchants.api;
 
 public interface MerchantInventory extends org.bukkit.inventory.MerchantInventory {
-	
-	/**
-	 * Gets the {@link MerchantSession} of this inventory.
-	 * 
-	 * @return The merchant session
-	 */
-	MerchantSession getSession();
 
-	/**
-	 * Gets the {@link Merchant} that is assigned to this inventory.
-	 * 
-	 * @return The merchant
-	 */
-	Merchant getMerchant();
+    /**
+     * Gets the {@link MerchantSession} of this inventory.
+     *
+     * @return The merchant session
+     */
+    MerchantSession getSession();
 
-	/**
-	 * Gets the index of the offer that is selected.
-	 * 
-	 * @return The index
-	 */
-	int getSelectedOfferIndex();
+    /**
+     * Gets the {@link Merchant} that is assigned to this inventory.
+     *
+     * @return The merchant
+     */
+    Merchant getMerchant();
 
-	/**
-	 * Gets the {@link MerchantOffer} that is selected.
-	 * 
-	 * @return The offer
-	 */
-	MerchantOffer getSelectedOffer();
+    /**
+     * Gets the index of the offer that is selected.
+     *
+     * @return The index
+     */
+    int getSelectedOfferIndex();
+
+    /**
+     * Gets the {@link MerchantOffer} that is selected.
+     *
+     * @return The offer
+     */
+    MerchantOffer getSelectedOffer();
 
 }

@@ -26,160 +26,160 @@ import org.bukkit.entity.Player;
 
 public interface Merchant {
 
-	/**
-	 * Gets the title of the merchant.
-	 * 
-	 * @return The title
-	 */
-	String getTitle();
+    /**
+     * Gets the title of the merchant.
+     *
+     * @return The title
+     */
+    String getTitle();
 
-	/**
-	 * Gets whether the string in the json format is.
-	 * 
-	 * @return Is title in json format
-	 */
-	boolean isTitleJson();
+    /**
+     * Gets whether the string in the json format is.
+     *
+     * @return Is title in json format
+     */
+    boolean isTitleJson();
 
-	/**
-	 * Sets the title of the merchant.
-	 * 
-	 * @param title The title
-	 * @param jsonTitle Whether the title is in json format
-	 */
-	void setTitle(String title, boolean jsonTitle);
+    /**
+     * Sets the title of the merchant.
+     *
+     * @param title The title
+     * @param jsonTitle Whether the title is in json format
+     */
+    void setTitle(String title, boolean jsonTitle);
 
-	/**
-	 * Sets the title of the merchant.
-	 * 
-	 * @param title The title
-	 */
-	void setTitle(String title);
+    /**
+     * Sets the title of the merchant.
+     *
+     * @param title The title
+     */
+    void setTitle(String title);
 
-	/**
-	 * Adds the {@link MerchantTradeListener} to the merchant.
-	 * 
-	 * @param listener The listener
-	 * @return {@code true} if not added before
-	 */
-	boolean addListener(MerchantTradeListener listener);
+    /**
+     * Adds the {@link MerchantTradeListener} to the merchant.
+     *
+     * @param listener The listener
+     * @return {@code true} if not added before
+     */
+    boolean addListener(MerchantTradeListener listener);
 
-	/**
-	 * Removes the {@link MerchantTradeListener} from the merchant.
-	 * 
-	 * @param listener The listener
-	 * @return {@code true} if added before
-	 */
-	boolean removeListener(MerchantTradeListener listener);
+    /**
+     * Removes the {@link MerchantTradeListener} from the merchant.
+     *
+     * @param listener The listener
+     * @return {@code true} if added before
+     */
+    boolean removeListener(MerchantTradeListener listener);
 
-	/**
-	 * Gets the {@link MerchantTradeListener}s of the merchant.
-	 * 
-	 * @return The trade listeners
-	 */
-	Collection<MerchantTradeListener> getListeners();
+    /**
+     * Gets the {@link MerchantTradeListener}s of the merchant.
+     *
+     * @return The trade listeners
+     */
+    Collection<MerchantTradeListener> getListeners();
 
-	/**
-	 * Adds a new {@link MerchantOffer} to the merchant.
-	 * 
-	 * @param offer The offer
-	 */
-	void addOffer(MerchantOffer offer);
+    /**
+     * Adds a new {@link MerchantOffer} to the merchant.
+     *
+     * @param offer The offer
+     */
+    void addOffer(MerchantOffer offer);
 
-	/**
-	 * Adds the {@link MerchantOffer}s to the merchant.
-	 * 
-	 * @param offers The offers
-	 */
-	void addOffers(Iterable<MerchantOffer> offers);
+    /**
+     * Adds the {@link MerchantOffer}s to the merchant.
+     *
+     * @param offers The offers
+     */
+    void addOffers(Iterable<MerchantOffer> offers);
 
-	/**
-	 * Sorts all the {@link MerchantOffer}s of the merchant.
-	 * 
-	 * @param comparator The comparator
-	 */
-	void sortOffers(Comparator<MerchantOffer> comparator);
+    /**
+     * Sorts all the {@link MerchantOffer}s of the merchant.
+     *
+     * @param comparator The comparator
+     */
+    void sortOffers(Comparator<MerchantOffer> comparator);
 
-	/**
-	 * Removes the specified {@link MerchantOffer} from the merchant.
-	 * 
-	 * @param offer The offer
-	 */
-	void removeOffer(MerchantOffer offer);
+    /**
+     * Removes the specified {@link MerchantOffer} from the merchant.
+     *
+     * @param offer The offer
+     */
+    void removeOffer(MerchantOffer offer);
 
-	/**
-	 * Removes all the specified {@link MerchantOffer}s from the merchant.
-	 * 
-	 * @param offers The offers
-	 */
-	void removeOffers(Iterable<MerchantOffer> offers);
+    /**
+     * Removes all the specified {@link MerchantOffer}s from the merchant.
+     *
+     * @param offers The offers
+     */
+    void removeOffers(Iterable<MerchantOffer> offers);
 
-	/**
-	 * Gets all the {@link MerchantOffer}s of the merchant.
-	 * 
-	 * @return The offers
-	 */
-	List<MerchantOffer> getOffers();
+    /**
+     * Gets all the {@link MerchantOffer}s of the merchant.
+     *
+     * @return The offers
+     */
+    List<MerchantOffer> getOffers();
 
-	/**
-	 * Gets the offer at the index.
-	 * 
-	 * @param index The index
-	 * @return The offer
-	 */
-	MerchantOffer getOfferAt(int index);
+    /**
+     * Gets the offer at the index.
+     *
+     * @param index The index
+     * @return The offer
+     */
+    MerchantOffer getOfferAt(int index);
 
-	/**
-	 * Gets the amount of offers in this merchant.
-	 * 
-	 * @return The count
-	 */
-	int getOffersCount();
+    /**
+     * Gets the amount of offers in this merchant.
+     *
+     * @return The count
+     */
+    int getOffersCount();
 
-	/**
-	 * Sets the {@link MerchantOffer} at the index.
-	 * 
-	 * @param index The index
-	 * @param offer The offer
-	 */
-	void setOfferAt(int index, MerchantOffer offer);
+    /**
+     * Sets the {@link MerchantOffer} at the index.
+     *
+     * @param index The index
+     * @param offer The offer
+     */
+    void setOfferAt(int index, MerchantOffer offer);
 
-	/**
-	 * Inserts the {@link MerchantOffer} at the index.
-	 * 
-	 * @param index The index
-	 * @param offer The offer
-	 */
-	void insetOfferAt(int index, MerchantOffer offer);
+    /**
+     * Inserts the {@link MerchantOffer} at the index.
+     *
+     * @param index The index
+     * @param offer The offer
+     */
+    void insetOfferAt(int index, MerchantOffer offer);
 
-	/**
-	 * Adds a customer to the merchant.
-	 * 
-	 * @param player The player
-	 * @return {@code true} if not a customer before
-	 */
-	boolean addCustomer(Player player);
+    /**
+     * Adds a customer to the merchant.
+     *
+     * @param player The player
+     * @return {@code true} if not a customer before
+     */
+    boolean addCustomer(Player player);
 
-	/**
-	 * Removes a customer from the merchant.
-	 * 
-	 * @param player The player
-	 * @return {@code true} if a customer before
-	 */
-	boolean removeCustomer(Player player);
+    /**
+     * Removes a customer from the merchant.
+     *
+     * @param player The player
+     * @return {@code true} if a customer before
+     */
+    boolean removeCustomer(Player player);
 
-	/**
-	 * Gets whether the merchant the customer has.
-	 * 
-	 * @param player The player
-	 * @return {@code true} if customer
-	 */
-	boolean hasCustomer(Player player);
+    /**
+     * Gets whether the merchant the customer has.
+     *
+     * @param player The player
+     * @return {@code true} if customer
+     */
+    boolean hasCustomer(Player player);
 
-	/**
-	 * Gets the customers of the merchant.
-	 * 
-	 * @return The customers
-	 */
-	Collection<Player> getCustomers();
+    /**
+     * Gets the customers of the merchant.
+     *
+     * @return The customers
+     */
+    Collection<Player> getCustomers();
 
 }

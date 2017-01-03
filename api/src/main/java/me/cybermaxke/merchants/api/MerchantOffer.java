@@ -24,92 +24,92 @@ import com.google.common.base.Optional;
 
 public interface MerchantOffer {
 
-	/**
-	 * Gets the first {@link ItemStack} that will be sold to the merchant.
-	 * 
-	 * @return The first item stack
-	 */
-	ItemStack getFirstItem();
+    /**
+     * Gets the first {@link ItemStack} that will be sold to the merchant.
+     *
+     * @return The first item stack
+     */
+    ItemStack getFirstItem();
 
-	/**
-	 * Gets the second {@link ItemStack} that will be sold to the
-	 * merchant. This item can be {@link Optional#absent()}.
-	 * 
-	 * @return The second item stack
-	 */
-	Optional<ItemStack> getSecondItem();
+    /**
+     * Gets the second {@link ItemStack} that will be sold to the
+     * merchant. This item can be {@link Optional#absent()}.
+     *
+     * @return The second item stack
+     */
+    Optional<ItemStack> getSecondItem();
 
-	/**
-	 * Gets the result {@link ItemStack} that the merchant will give.
-	 * 
-	 * @return The result item stack
-	 */
-	ItemStack getResultItem();
+    /**
+     * Gets the result {@link ItemStack} that the merchant will give.
+     *
+     * @return The result item stack
+     */
+    ItemStack getResultItem();
 
-	/**
-	 * Gets the maximum amount of uses of the merchant offer. Where -1
-	 * means infinite uses.
-	 * 
-	 * @return The maximum uses
-	 */
-	int getMaxUses();
+    /**
+     * Gets the maximum amount of uses of the merchant offer. Where -1
+     * means infinite uses.
+     *
+     * @return The maximum uses
+     */
+    int getMaxUses();
 
-	/**
-	 * Sets the maximum amount of uses of the merchant offer. Where -1
-	 * means infinite uses.
-	 * 
-	 * @param uses The maximum uses
-	 */
-	void setMaxUses(int uses);
+    /**
+     * Sets the maximum amount of uses of the merchant offer. Where -1
+     * means infinite uses.
+     *
+     * @param uses The maximum uses
+     */
+    void setMaxUses(int uses);
 
-	/**
-	 * Adds the extra amount to the maximum uses of the merchant offer.
-	 * 
-	 * @param extra The extra uses
-	 */
-	void addMaxUses(int extra);
+    /**
+     * Adds the extra amount to the maximum uses of the merchant offer.
+     *
+     * @param extra The extra uses
+     */
+    void addMaxUses(int extra);
 
-	/**
-	 * Gets the current amount of uses of the merchant offer.
-	 * 
-	 * @return The amount uses
-	 */
-	int getUses();
-	
-	/**
-	 * Sets the amount of uses of the merchant offer.
-	 * 
-	 * @param uses The uses
-	 */
-	void setUses(int uses);
+    /**
+     * Gets the current amount of uses of the merchant offer.
+     *
+     * @return The amount uses
+     */
+    int getUses();
 
-	/**
-	 * Adds the uses amount to the current uses of the merchant offer.
-	 * 
-	 * @param uses The uses
-	 */
-	void addUses(int uses);
+    /**
+     * Sets the amount of uses of the merchant offer.
+     *
+     * @param uses The uses
+     */
+    void setUses(int uses);
 
-	/**
-	 * Gets whether the offer is locked. This will happen if the amount of
-	 * uses exceeds the maximum amount of uses.
-	 * 
-	 * <p>
-	 * This feature will be handled different in versions before 1.4,
-	 * because this the version was that the feature implemented was.
-	 * There is a workaround for this problem and when the offer locked
-	 * is it will be hidden from the offer list.
-	 * </p>
-	 * 
-	 * @return Is locked
-	 */
-	boolean isLocked();
+    /**
+     * Adds the uses amount to the current uses of the merchant offer.
+     *
+     * @param uses The uses
+     */
+    void addUses(int uses);
 
-	/**
-	 * Clones the merchant offer.
-	 * 
-	 * @return The clone
-	 */
-	MerchantOffer clone();
+    /**
+     * Gets whether the offer is locked. This will happen if the amount of
+     * uses exceeds the maximum amount of uses.
+     *
+     * <p>
+     * This feature will be handled different in versions before 1.4,
+     * because this the version was that the feature implemented was.
+     * There is a workaround for this problem and when the offer locked
+     * is it will be hidden from the offer list.
+     * </p>
+     *
+     * @return Is locked
+     */
+    boolean isLocked();
+
+    /**
+     * Clones the merchant offer.
+     *
+     * @return The clone
+     */
+    MerchantOffer clone();
 
 }

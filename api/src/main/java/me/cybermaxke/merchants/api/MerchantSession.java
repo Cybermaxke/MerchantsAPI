@@ -22,20 +22,20 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.InventoryHolder;
 
 public interface MerchantSession extends InventoryHolder {
-	
-	/**
-	 * Gets the {@link Player} that is currently trading
-	 * with the {@link #getMerchant()}.
-	 * 
-	 * @return The customer
-	 */
-	Player getCustomer();
 
-	/**
-	 * Gets the {@link Merchant} that is trading items with
-	 * the {@link #getCustomer}.
-	 * 
-	 * @return The merchant
-	 */
-	Merchant getMerchant();
+    /**
+     * Gets the {@link Player} that is currently trading
+     * with the {@link #getMerchant()}.
+     *
+     * @return The customer
+     */
+    Player getCustomer();
+
+    /**
+     * Gets the {@link Merchant} that is trading items with
+     * the {@link #getCustomer}.
+     *
+     * @return The merchant
+     */
+    Merchant getMerchant();
 }
