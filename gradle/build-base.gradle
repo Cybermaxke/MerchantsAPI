@@ -10,7 +10,7 @@ targetCompatibility = '1.6'
 
 // Basic project information
 group = 'cybermaxke'
-version = '1.5.0-SNAPSHOT'
+version = '1.5.2-SNAPSHOT'
 
 // Repositories
 repositories {
@@ -50,7 +50,7 @@ dependencies {
 
 jar {
     // Classifier
-    classifier = 'release'
+    classifier = ''
     // Exclude empty directories
     includeEmptyDirs = false
 }

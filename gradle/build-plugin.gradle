@@ -1,7 +1,7 @@
 apply from: rootProject.file('gradle/build-base.gradle')
 
 // Basic project information
-archivesBaseName = "merchantsapi-spigot-mc${spigotVersion}"
+archivesBaseName = "merchants-spigot-mc${spigotVersion}"
 
 apply from: rootProject.file('gradle/build-copy.gradle')
 
