@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with MerchantsAPI. If not, see <http://www.gnu.org/licenses/>.
  */
-package me.cybermaxke.merchants.v110r1;
+package me.cybermaxke.merchants.v111r1;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -102,12 +102,12 @@ public class SMerchant implements IMerchant, Merchant {
 
         if (jsonTitle) {
             try {
-                newTitle = ChatSerializer.a(this.title);
+                newTitle = ChatSerializer.a(title);
             } catch (Exception e) {
                 throw new IllegalArgumentException("invalid json format (" + title + ")", e);
             }
         } else {
-            newTitle = CraftChatMessage.fromString(this.title)[0];
+            newTitle = CraftChatMessage.fromString(title)[0];
         }
 
         this.sendTitle = newTitle;

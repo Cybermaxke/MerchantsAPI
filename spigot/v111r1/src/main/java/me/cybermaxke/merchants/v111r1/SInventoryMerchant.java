@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with MerchantsAPI. If not, see <http://www.gnu.org/licenses/>.
  */
-package me.cybermaxke.merchants.v110r1;
+package me.cybermaxke.merchants.v111r1;
 
 import org.bukkit.entity.Player;
 

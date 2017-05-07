@@ -99,12 +99,12 @@ public class SMerchant implements IMerchant, Merchant {
 
         if (jsonTitle) {
             try {
-                newTitle = ChatSerializer.a(this.title);
+                newTitle = ChatSerializer.a(title);
             } catch (Exception e) {
                 throw new IllegalArgumentException("invalid json format (" + title + ")", e);
             }
         } else {
-            newTitle = CraftChatMessage.fromString(this.title)[0];
+            newTitle = CraftChatMessage.fromString(title)[0];
         }
 
         this.sendTitle = newTitle;
